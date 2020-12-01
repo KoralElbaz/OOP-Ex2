@@ -261,27 +261,27 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     private static class CreateJsonGraph {
         //Serialize
         public JsonWriter graphToJson(directed_weighted_graph g,String file) throws IOException {
-            FileWriter r= new FileWriter(file);
-            JsonWriter writer = new JsonWriter(r);
+            FileWriter fileWriter= new FileWriter(file);
+            JsonWriter writer = new JsonWriter(fileWriter);
             writer.beginObject();
             writer.name("Edges");
             writer.beginArray();
-            for (node_data n : g.getV()) {
-                for (edge_data ed: g.getE(n.getKey())) {
+            for (node_data node : g.getV()) {
+                for (edge_data edge: g.getE(node.getKey())) {
                     writer.beginObject();
-                    writer.name("src").value(ed.getSrc());
-                    writer.name("w").value(ed.getWeight());
-                    writer.name("dest").value(ed.getDest());
+                    writer.name("src").value(edge.getSrc());
+                    writer.name("w").value(edge.getWeight());
+                    writer.name("dest").value(edge.getDest());
                     writer.endObject();
                 }
             }
             writer.endArray();
             writer.name("Nodes");
             writer.beginArray();
-            for (node_data n : g.getV()) {
+            for (node_data node : g.getV()) {
                 writer.beginObject();
-                writer.name("pos").value(n.getLocation().toString());
-                writer.name("id").value(n.getKey());
+                writer.name("pos").value(node.getLocation().toString());
+                writer.name("id").value(node.getKey());
                 writer.endObject();
             }
             writer.endArray();
