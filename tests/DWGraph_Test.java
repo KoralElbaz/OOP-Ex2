@@ -1,10 +1,11 @@
-package ex2.tests;
 
-import ex2.api.DWGraph_DS;
-import ex2.api.directed_weighted_graph;
-import ex2.api.edge_data;
-import ex2.api.node_data;
-import org.junit.Test;
+
+import api.DWGraph_DS;
+import api.directed_weighted_graph;
+import api.edge_data;
+import api.node_data;
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;

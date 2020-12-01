@@ -1,10 +1,13 @@
 package api;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.lang.reflect.Type;
 import java.util.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import org.json.JSONArray;
 
 public class DWGraph_Algo implements dw_graph_algorithms{
     private directed_weighted_graph myGraph;
@@ -207,25 +210,37 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
     @Override
     public boolean save(String file) {
-        Gson gson=new GsonBuilder().setPrettyPrinting().create();
-        String json=gson.toJson(this.myGraph);
-        // System.out.println(json);
         try
         {
-            PrintWriter pw=new PrintWriter(file);
-            pw.write(json);
-            pw.close();
+            JsonWriter r=new CreateJsonGraph().graphToJson(this.myGraph,file);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean load(String file) {
+        try {
+            GsonBuilder builder= new GsonBuilder();
+            builder.registerTypeAdapter(DWGraph_DS.class,new CreateGraph());
+            Gson gson= builder.create();
+
+            FileReader reader= new FileReader(file);
+            directed_weighted_graph graph= gson.fromJson(reader, DWGraph_DS.class);
+            System.out.println(graph);
+            init(graph);
+
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
             return false;
         }
         return true;
-    }
-
-    @Override
-    public boolean load(String file) {
-        return false;
     }
 
     @Override
@@ -241,5 +256,63 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         if (o == null || getClass() != o.getClass()) return false;
         DWGraph_Algo that = (DWGraph_Algo) o;
         return this.toString().equals(o.toString());
+    }
+
+    private static class CreateJsonGraph {
+        //Serialize
+        public JsonWriter graphToJson(directed_weighted_graph g,String file) throws IOException {
+            FileWriter r= new FileWriter(file);
+            JsonWriter writer = new JsonWriter(r);
+            writer.beginObject();
+            writer.name("Edges");
+            writer.beginArray();
+            for (node_data n : g.getV()) {
+                for (edge_data ed: g.getE(n.getKey())) {
+                    writer.beginObject();
+                    writer.name("src").value(ed.getSrc());
+                    writer.name("w").value(ed.getWeight());
+                    writer.name("dest").value(ed.getDest());
+                    writer.endObject();
+                }
+            }
+            writer.endArray();
+            writer.name("Nodes");
+            writer.beginArray();
+            for (node_data n : g.getV()) {
+                writer.beginObject();
+                writer.name("pos").value(n.getLocation().toString());
+                writer.name("id").value(n.getKey());
+                writer.endObject();
+            }
+            writer.endArray();
+            writer.endObject();
+            writer.close();
+            return writer;
+        }
+    }
+
+    //Deserialize
+    private class CreateGraph implements JsonDeserializer<directed_weighted_graph> {
+        @Override
+        public directed_weighted_graph deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+            directed_weighted_graph g=new DWGraph_DS();
+
+            JsonObject jasonO= jsonElement.getAsJsonObject();
+            JsonArray nodes= jasonO.get("Nodes").getAsJsonArray();
+            JsonArray edges= jasonO.get("Edges").getAsJsonArray();
+            for (JsonElement node:nodes) {
+                int key=((JsonObject)node).get("id").getAsInt();
+                String pos=((JsonObject)node).get("pos").getAsString();
+                g.addNode(new DWGraph_DS.Node(key));
+                g.getNode(key).setLocation(new Location(pos));
+            }
+            for (JsonElement edge:edges) {
+                int key=((JsonObject)edge).get("src").getAsInt();
+                int dest=((JsonObject)edge).get("dest").getAsInt();
+                double w=((JsonObject)edge).get("w").getAsDouble();
+                g.connect(key,dest,w);
+            }
+            return g;
+        }
     }
 }

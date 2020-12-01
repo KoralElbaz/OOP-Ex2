@@ -1,10 +1,12 @@
-package ex2.tests;
 
-import ex2.api.*;
+import api.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 public class DWGraph_AlgoTest {
 
     @Test
@@ -165,7 +167,7 @@ public class DWGraph_AlgoTest {
 
 
     @Test
-    public void readAndSave(){
+    public void readAndSave() throws IOException {
         directed_weighted_graph g0 = new DWGraph_DS();
         DWGraph_DSTest.createGraph(g0,15);
         DWGraph_DSTest.createEdgeForNode(g0,2,3);
@@ -187,7 +189,7 @@ public class DWGraph_AlgoTest {
         Assertions.assertNotEquals(g0,g1);
     }
     @Test
-    public void readAndSave2(){
+    public void readAndSave2() throws IOException {
         directed_weighted_graph g0 = new DWGraph_DS();
         for(int i=0; i<5; i++) {
             g0.addNode(new DWGraph_DS.Node(i));
@@ -205,7 +207,7 @@ public class DWGraph_AlgoTest {
         Assertions.assertEquals(g0,newG);
     }
     @Test
-    public void testSave(){
+    public void testSave() throws IOException {
         directed_weighted_graph g= new DWGraph_DS();
         g.addNode(new DWGraph_DS.Node(1));
         g.addNode(new DWGraph_DS.Node(2));

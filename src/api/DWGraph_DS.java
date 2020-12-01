@@ -157,7 +157,7 @@ public class DWGraph_DS implements directed_weighted_graph {
         public Node(int key){
             _key=key;
             _tag=0;
-            _location=null;
+            _location=new Location(0, 0, 0);;
             this.setInfo("White");
             this.setWeight(Double.MAX_VALUE);
 
@@ -174,7 +174,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         @Override//////////////////////////////////////////////////////////////////
         public void setLocation(geo_location p) {
-            _location.distance(p);
+            _location=new Location(p);
         }
 
         @Override
@@ -237,6 +237,7 @@ public class DWGraph_DS implements directed_weighted_graph {
         private double _weight;
         private String _info;
         private int _tag;
+
 
         public Edge(int src, int dest, double w){
             _src=src;
