@@ -1,17 +1,9 @@
 package gameClient;
-
-import api.directed_weighted_graph;
-import api.edge_data;
-import api.geo_location;
-import api.node_data;
-import gameClient.util.Point3D;
-import gameClient.util.Range;
-import gameClient.util.Range2D;
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.Iterator;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 
 /**
  * This class represents a very simple GUI class to present a
@@ -20,23 +12,32 @@ import java.util.List;
  * code and not to take it "as is".
  *
  */
-public class MyFrame extends JFrame
-{
+public class MyFrame extends JFrame {
 	private int _ind;
 	private Arena _ar;
-	//private gameClient.util.Range2Range _w2f;
 	MyPanel jPanel;
 
 	MyFrame(String a)
 	{
 		super(a);
 		int _ind = 0;
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);//////////////////////////////////////////////
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		//this.setTitle("Pokemon Game");
+
+//		this.setLayout(new FlowLayout());
+//		this.add(text);
+//		this.add(id);
+//		this.add(button);
+//		button.addActionListener(this);
+//	}
+//	@Override
+//	public void actionPerformed(ActionEvent e) {
+//		if(e.getSource()==button)
+//			this.add(jPanel);
 	}
 	public void update(Arena ar)
 	{
 		this._ar = ar;
-		//updateFrame();
 		initPanel();
 		jPanel.update();
 	}
@@ -48,6 +49,7 @@ public class MyFrame extends JFrame
 		jPanel.updatePanel();
 		jPanel.repaint();
 	}
+
 
 //	private void updateFrame() {
 //		Range rx = new Range(20,this.getWidth()-20);

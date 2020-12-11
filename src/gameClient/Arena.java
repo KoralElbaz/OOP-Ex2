@@ -23,6 +23,7 @@ import java.util.List;
  */
 public class Arena {
 	public static final double EPS1 = 0.001, EPS2=EPS1*EPS1, EPS=EPS2;
+	private String time;
 	private directed_weighted_graph _gg;
 	private List<CL_Agent> _agents;
 	private List<CL_Pokemon> _pokemons;
@@ -32,19 +33,26 @@ public class Arena {
 
 	public Arena() {;
 		_info = new ArrayList<String>();
+		this.time="";
 	}
 	private Arena(directed_weighted_graph g, List<CL_Agent> r, List<CL_Pokemon> p) {
 		_gg = g;
 		this.setAgents(r);
 		this.setPokemons(p);
 	}
-	public void setPokemons(List<CL_Pokemon> f) {
+	public void setPokemons(List<CL_Pokemon> f)
+	{
 		this._pokemons = f;
 	}
-	public void setAgents(List<CL_Agent> f) {
+	public void setAgents(List<CL_Agent> f)
+	{
 		this._agents = f;
 	}
-	public void setGraph(directed_weighted_graph g) {this._gg =g;}//init();}
+	public void setGraph(directed_weighted_graph g)
+	{
+		this._gg =g;
+	}//init();}
+
 	private void init( ) {
 		MIN=null; MAX=null;
 		double x0=0,x1=0,y0=0,y1=0;
@@ -175,4 +183,8 @@ public class Arena {
 		return ans;
 	}
 
+	public void setTime(String t) {
+		this.time=t;
+	}
+	public String getTime(){return time;}
 }
