@@ -5,19 +5,22 @@ import api.dw_graph_algorithms;
 import Server.Game_Server_Ex2;
 import api.directed_weighted_graph;
 import api.game_service;
+import com.google.gson.JsonObject;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class EX2 implements  Runnable
 {
-    private static MyFrame _win;
     private static Arena _ar;
+    private static MyFrame _win;
+    private directed_weighted_graph g;
+    private HashMap<Integer,HashMap<Integer,CL_Pokemon>> data;
 
     public static void main(String[] args)
     {
@@ -28,90 +31,119 @@ public class EX2 implements  Runnable
     @Override
     public void run()
     {
-        int scenario_num = 0;
+        int scenario_num = 11;
         game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
-        //	int id = 999;
-        //	game.login(id);
         init(game);
+        game.startGame();
         _win.setTitle("Ex2 - OOP: (NONE trivial Solution) "+game.toString());
-        int ind=0;
-        long dt=5000;
-        startPos(game, _ar.getGraph());
-        while(game.isRunning())
-        {
-            //moveAgants(game, gg);
-            try
-            {
+
+        int ind=0;long dt=100;
+        while (game.isRunning()){
+            moveAgants(game);
+            try {
                 if(ind%1==0) {_win.repaint();}
+                //_ar.setTime("Time Left: " + (double) game.timeToEnd() / 1000);
                 Thread.sleep(dt);
                 ind++;
             }
-            catch(Exception e)
-            {
+            catch(Exception e) {
                 e.printStackTrace();
             }
         }
+
         String res = game.toString();
-
         System.out.println(res);
-        game.startGame();
-
-        //System.exit(0);
-        //startPos(game, _ar.getGraph());
+        System.exit(0);
     }
-    private void init(game_service game)
+
+    public void init(game_service game)
     {
-        dw_graph_algorithms g = new DWGraph_Algo();
-        g.load(save(game.getGraph()));
-        _ar = new Arena();
-        _ar.setGraph(g.getGraph());
-        _ar.setPokemons(Arena.json2Pokemons(game.getPokemons()));
-        _win = new MyFrame("teat EX2");
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int w = screenSize.width;
-        int h = screenSize.height;
-        _win.setSize(w, h);
+        String gG=game.getGraph();
+        dw_graph_algorithms saveG=new DWGraph_Algo();
+        saveG.load(save(gG));
+        g= saveG.copy();
+        _ar=new Arena();
+        _ar.setGraph(g);
+
+        String gP=game.getPokemons();
+        _ar.setPokemons(Arena.json2Pokemons(gP));
+
+        _win=new MyFrame("test Ex2");
+        _win.setSize(1000,700);
         _win.update(_ar);
         _win.show();
-        String info = game.toString();
+
+        data=new HashMap<>();
+        HashMap<Integer , CL_Pokemon> newPok=new HashMap<>();
+        String info =game.toString();
         JSONObject line;
-        try
-        {
-            line = new JSONObject(info);
-            JSONObject ttt = line.getJSONObject("GameServer");
-            int rs = ttt.getInt("agents");
+        try {
+            line=new JSONObject(info);
+            JSONObject  gameInfo=line.getJSONObject("GameServer");
+            int agentsNum=gameInfo.getInt("agents");
             System.out.println(info);
             System.out.println(game.getPokemons());
-            int src_node = 0;  // arbitrary node, you should start at one of the pokemon
-            ArrayList<CL_Pokemon> cl_fs = Arena.json2Pokemons(game.getPokemons());
 
-            for (int a = 0; a < cl_fs.size(); a++)
+            ArrayList<CL_Pokemon> cl_pok = Arena.json2Pokemons(game.getPokemons());
+            for(int a = 0;a<cl_pok.size();a++)
             {
-                Arena.updateEdge(cl_fs.get(a), _ar.getGraph());
+                Arena.updateEdge(cl_pok.get(a),g);//מיקום פוקימונים
             }
-            for (int a = 0; a < rs; a++)
-            {
-                int ind = a % cl_fs.size();
-                CL_Pokemon c = cl_fs.get(ind);
-                int nn = c.get_edge().getDest();
-                if (c.getType() < 0)
-                {
-                    nn = c.get_edge().getSrc();
-                }
-                startPos(game, _ar.getGraph());
+
+            for(int a = 0;a<agentsNum;a++)
+            {//מיקום של הסוכנים
+                int ind = a%cl_pok.size();
+                CL_Pokemon c = cl_pok.get(ind);
+
+                int dest = c.get_edge().getDest();
+                int src = c.get_edge().getSrc();
+                startPos(src,dest,c,game ,newPok);
+                data.put(a,newPok);
             }
         }
-        catch (JSONException e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
+        }
+
+
+    }
+
+    private void startPos(int src, int dest, CL_Pokemon c,game_service game , HashMap<Integer,CL_Pokemon> h)
+    {
+        System.out.println("Src: "+src+" dest:"+dest);
+        if(c.getType()==-1)
+        {
+            if(dest>src) {
+                game.addAgent(dest);
+                h.put(dest,c);
+                System.out.println("------>"+dest);
+            }
+            else
+            {
+                game.addAgent(src);
+                h.put(src,c);
+                System.out.println("src---->"+src);
+            }
+        }
+        else if(c.getType()==1){
+            if(dest>src){
+                game.addAgent(src);
+                h.put(src,c);
+                System.out.println("------>"+src);
+            }
+            else{
+                game.addAgent(dest);
+                h.put(dest,c);
+                System.out.println("src---->"+dest);
+
+            }
         }
     }
 
-        public static String save(String s)
-        {
+    private String save(String gG) {
         try {
             FileWriter fw= new FileWriter("Jgraph.json");
-            fw.write(s);
+            fw.write(gG);
             fw.flush();
             fw.close();
 
@@ -121,27 +153,8 @@ public class EX2 implements  Runnable
         }
         return "Jgraph.json";
     }
-    public static void startPos(game_service game,directed_weighted_graph g) {
-        String a = game.getAgents();
-        List<CL_Agent> listOfAgent = Arena.getAgents(a, g);
-        _ar.setAgents(listOfAgent);
-        String p = game.getPokemons();
-        List<CL_Pokemon> listOfPok = Arena.json2Pokemons(p);
-        _ar.setPokemons(listOfPok);
-        int i=0,j=0;
-        while(i<listOfAgent.size()&&j<listOfPok.size()){
-            int src=listOfPok.get(j).get_edge().getSrc();
-            game.addAgent(src);
-            j++;
-            i++;
-        }
-//        for (int i = 0; i < listOfPok.size(); i++) {
-//            CL_Pokemon pok = listOfPok.get(i);
-//            int src = pok.get_edge().getSrc();
-//            for (int j = 0; j < listOfAgent.size(); j++) {
-//                CL_Agent age = listOfAgent.get(j);
-//                game.addAgent(src);
-//            }
-//        }
+
+    private void moveAgants(game_service game) {
+
     }
 }

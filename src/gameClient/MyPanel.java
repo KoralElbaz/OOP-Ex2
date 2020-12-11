@@ -25,11 +25,11 @@ public class MyPanel extends JPanel {
     private Image pokemon;
     private Image background , info , remote;
     // private JButton button;
-    private JFrame popUp = new JFrame("popUp");
+    private JFrame popUp;
 
     public MyPanel(Arena ar) {
 
-        popUpWin();
+        //popUpWin();
         this._ar = ar;
         this.agent = new ImageIcon("./data/ash.png").getImage();
         this.pokemon = new ImageIcon("./data/pika9.png").getImage();
@@ -40,6 +40,7 @@ public class MyPanel extends JPanel {
     }
 
     public void popUpWin(){
+        popUp = new JFrame("popUp");
         popUp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         popUp.setBounds(60,5,400,200);
 
@@ -104,11 +105,12 @@ public class MyPanel extends JPanel {
         g2D.drawImage(info,x+180,0, 550, 350,null);
 
 
-        drawInfo(game);
+
         drawGraph(g);
         drawAgants(g);
         drawPokemons(g);
         drawInfo(g);
+        drawInfo(game);
         // Dimension screenSize=Toolkit.getDefaultToolkit().getScreenSize();
 
     }
