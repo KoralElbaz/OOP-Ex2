@@ -19,6 +19,7 @@ public class Location implements geo_location {
     }
     public Location(String s){
         StringTokenizer st= new StringTokenizer(s,",",false);
+
         _x=Double.parseDouble(st.nextToken());
         _y=Double.parseDouble(st.nextToken());
         _z=Double.parseDouble(st.nextToken());
@@ -42,8 +43,8 @@ public class Location implements geo_location {
     @Override
     public double distance(geo_location g) {
         double disX= Math.pow(_x-g.x(),2);
-        double disY= Math.pow(_y-g.x(),2);
-        double disZ= Math.pow(_z-g.x(),2);
+        double disY= Math.pow(_y-g.y(),2);
+        double disZ= Math.pow(_z-g.z(),2);
         double ans= Math.sqrt(disX+disY+disZ);
 
         return ans;

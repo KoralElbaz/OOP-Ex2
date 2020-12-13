@@ -4,36 +4,83 @@ import api.directed_weighted_graph;
 import api.edge_data;
 import api.geo_location;
 import api.node_data;
+import api.game_service;
 import gameClient.util.Point3D;
 import gameClient.util.Range;
 import gameClient.util.Range2D;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.List;
 
 public class MyPanel extends JPanel {
+    private game_service game;
     private Arena _ar;
     private gameClient.util.Range2Range _w2f;
     private Graphics2D g2D;
     private Image agent;
     private Image pokemon;
-    private Image background;
+    private Image background , info , remote;
+    // private JButton button;
+    private JFrame popUp;
 
-    public MyPanel(Arena ar)
-    {
-        this._ar=ar;
-        this.agent=new ImageIcon("C:\\Users\\Koral Elbaz\\Desktop\\Koral Document\\PicGame\\bad.png").getImage();
-        this.pokemon=new ImageIcon("C:\\Users\\Koral Elbaz\\Desktop\\Koral Document\\PicGame\\pikachu.png").getImage();
-        this.background=new ImageIcon("C:\\Users\\Koral Elbaz\\Desktop\\Koral Document\\PicGame\\backG2.jpg").getImage();
+    public MyPanel(Arena ar) {
+
+        //popUpWin();
+        this._ar = ar;
+        this.agent = new ImageIcon("./data/ash.png").getImage();
+        this.pokemon = new ImageIcon("./data/pika9.png").getImage();
+        this.background = new ImageIcon("./data/backG4.jpg").getImage();
+        this.info=new ImageIcon("./data/pokemon.png").getImage();
+        this.remote=new ImageIcon("./data/data.png").getImage();
 
     }
+
+    public void popUpWin(){
+        popUp = new JFrame("popUp");
+        popUp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        popUp.setBounds(60,5,400,200);
+
+        Container container=popUp.getContentPane();
+        container.setLayout(null);
+
+        JLabel logo=new JLabel("Please ,enter ID number.");
+        logo.setBounds(60,5,250,30);
+
+        JLabel id=new JLabel("Id:");
+        id.setBounds(20,30,250,30);
+
+        JTextField idToWrite=new JTextField();
+        idToWrite.setBounds(65,30,250,30);
+
+        JButton button=new JButton("Start");
+        button.setBounds(150,90,100,30);
+        button.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource()==button) {
+                    JOptionPane.showMessageDialog(null,"Good Lack!");
+                }
+            }
+        });
+
+        container.add(logo);
+        container.add(id);
+        container.add(idToWrite);
+        container.add(button);
+
+        popUp.setVisible(true);
+
+    }
+
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         paint(g);
-
     }
     public void update()
     {
@@ -49,16 +96,34 @@ public class MyPanel extends JPanel {
     }
     public void paint(Graphics g) {
         g2D=(Graphics2D)g;
-        int w = this.getWidth();
+        int w = this.getWidth();//
         int h = this.getHeight();
         g.clearRect(0, 0, w, h);
         g2D.drawImage(background, 0, 0, w, h, null);
-        drawPokemons(g);
+
+        int x = (this.getWidth() - info.getWidth(null))/2 ;
+        g2D.drawImage(info,x+180,0, 550, 350,null);
+
+
+
         drawGraph(g);
         drawAgants(g);
+        drawPokemons(g);
         drawInfo(g);
-    }
+        drawInfo(game);
+        // Dimension screenSize=Toolkit.getDefaultToolkit().getScreenSize();
 
+    }
+    private void drawInfo(game_service game){
+        int x = this.getWidth();//
+        g2D.drawImage(remote,x-250,0, 250, 250,null);
+
+        String str=_ar.getTime();
+        g2D.drawString(str,  x, 0);
+        g2D.setFont(new Font("Ariel", Font.BOLD, (this.getHeight() + this.getWidth()) /90));
+
+
+    }
     private void drawPokemons(Graphics g) {
         g2D=(Graphics2D)g;
         List<CL_Pokemon> fs = _ar.getPokemons();
@@ -70,11 +135,11 @@ public class MyPanel extends JPanel {
                 CL_Pokemon f = itr.next();
                 Point3D c = f.getLocation();
                 int r=10;
-              //  if(f.getType()<0) {g.setColor(Color.orange);}
+                //  if(f.getType()<0) {g.setColor(Color.orange);}
                 if(c!=null)
                 {
                     geo_location fp = this._w2f.world2frame(c);
-                    g2D.drawImage(pokemon,(int)fp.x()-r, (int)fp.y()-r, 3*r, 3*r,null);
+                    g2D.drawImage(pokemon,(int)fp.x()-r, (int)fp.y()-r, 4*r, 4*r,null);
                 }
             }
         }
@@ -84,15 +149,17 @@ public class MyPanel extends JPanel {
         g2D=(Graphics2D)g;
         directed_weighted_graph gg = _ar.getGraph();
         Iterator<node_data> iter = gg.getV().iterator();
-        while(iter.hasNext()) {
+        while(iter.hasNext())
+        {
             node_data n = iter.next();
-            g.setColor(Color.black);
+            g.setColor(Color.lightGray);
             drawNode(n,5,g);
             Iterator<edge_data> itr = gg.getE(n.getKey()).iterator();
             while(itr.hasNext()) {
                 edge_data e = itr.next();
-                g.setColor(Color.black);
-                drawEdge(e, g);
+                g2D.setColor(Color.lightGray);
+
+                drawEdge(e, g2D);
             }
         }
     }
@@ -104,7 +171,9 @@ public class MyPanel extends JPanel {
         geo_location d = gg.getNode(e.getDest()).getLocation();
         geo_location s0 = this._w2f.world2frame(s);
         geo_location d0 = this._w2f.world2frame(d);
-        g.drawLine((int)s0.x(), (int)s0.y(), (int)d0.x(), (int)d0.y());
+        g2D.setStroke(new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        g2D.drawLine((int)s0.x(), (int)s0.y(), (int)d0.x(), (int)d0.y());
+
     }
 
     private void drawNode(node_data n, int r, Graphics g) {
@@ -128,7 +197,7 @@ public class MyPanel extends JPanel {
             if(c!=null)
             {
                 geo_location fp = this._w2f.world2frame(c);
-                g2D.drawImage(agent,(int)fp.x()-r, (int)fp.y()-r, 3*r, 3*r,null);
+                g2D.drawImage(agent,(int)fp.x()-r, (int)fp.y()-r, 3*10, 3*14,null);
             }
         }
     }
@@ -139,7 +208,7 @@ public class MyPanel extends JPanel {
         String dt = "none";
         for(int i=0;i<str.size();i++)
         {
-            g2D.drawString(str.get(i)+" dt: "+dt,100,60+i*20);
+            g.drawString(str.get(i)+" dt: "+dt,100,60+i*20);
         }
     }
 }

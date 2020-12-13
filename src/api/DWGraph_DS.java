@@ -20,11 +20,13 @@ public class DWGraph_DS implements directed_weighted_graph {
         this.mc=0;
     }
 
+    //this function return node_data by the node key.
     @Override
     public node_data getNode(int key) {
         return nodes.containsKey(key)?nodes.get(key):null;
     }
 
+    //this function return edge_data by the src and dest.
     @Override
     public edge_data getEdge(int src, int dest) {
         if(this.edgeSize()==0)
@@ -36,6 +38,8 @@ public class DWGraph_DS implements directed_weighted_graph {
         return null;
     }
 
+    //this function add a new node to the graph with the given key.
+    //if there is already a node with such a key there is no action.
     @Override
     public void addNode(node_data n) {
         if(n!=null && !nodes.containsKey(n.getKey())){
@@ -48,6 +52,9 @@ public class DWGraph_DS implements directed_weighted_graph {
         }
     }
 
+    //this function connect an edge between node1 and node2,
+    // with an edge with weight >=0.
+    //if the edge node1-node2 already exists - the method simply updates the weight of the edge.
     @Override
     public void connect(int src, int dest, double w) {
         if(src==dest) return;
@@ -56,16 +63,27 @@ public class DWGraph_DS implements directed_weighted_graph {
             if (!neighbors.get(src).containsKey(dest))countEdge++;
             mc++;
             edge_data newEdge = new Edge(src, dest, w);
+
+            //we're save in hashMap the node who connect to the src and the
+            // edge between them.
             neighbors.get(src).put(dest, newEdge);
-            connectToMe.get(dest).put(src,newEdge);/////////////////////////////////////////////
+
+            //we're save in other hashMap the node who connect to the dest and the
+            //edge between them.
+            connectToMe.get(dest).put(src,newEdge);
         }
 
     }
 
+    // this function return a pointer (shallow copy) for a
+    // collection representing all the nodes in the graph.
     @Override
     public Collection<node_data> getV() {
         return nodes.values();
     }
+
+    //This function returns a pointer (shallow copy) for the
+	// collection representing all the edges starting at the given node
 
     @Override
     public Collection<edge_data> getE(int node_id) {
@@ -73,22 +91,32 @@ public class DWGraph_DS implements directed_weighted_graph {
         return new ArrayList<>();
     }
 
+    // this function delete the node (with the given ID) from the graph -
+    // and removes all edges which starts or ends at this node.
     @Override
-    public node_data removeNode(int key) {///////////////////////////
+    public node_data removeNode(int key) {
+
+        //save the deleted node
         node_data toRemove=this.getNode(key);
+
+        //check the node exist
         if(toRemove!=null && this.neighbors.containsKey(key))
         {
             mc++;
+            //delete the edges getting out of the given node
             while(this.neighbors.get(key).size()!=0)
             {
                 Integer ans=this.neighbors.get(key).keySet().stream().findFirst().get();
                 this.removeEdge(key, ans);
             }
+
+            //delete the edges getting out of the neighbor's node
             while(this.connectToMe.get(key).size()!=0)
             {
                 Integer ans=this.connectToMe.get(key).keySet().stream().findFirst().get();
                 this.removeEdge(ans, key);
             }
+
             this.connectToMe.remove(key);
             this.neighbors.remove(key);
             this.nodes.remove(key);
@@ -96,6 +124,8 @@ public class DWGraph_DS implements directed_weighted_graph {
         return toRemove;
     }
 
+    //this function delete the edge from the graph,
+    //if the edge doesnt exist there is no action.
     @Override
     public edge_data removeEdge(int src, int dest) {
         edge_data toRemove=neighbors.get(src).get(dest);
@@ -172,7 +202,7 @@ public class DWGraph_DS implements directed_weighted_graph {
             return _location;
         }
 
-        @Override//////////////////////////////////////////////////////////////////
+        @Override
         public void setLocation(geo_location p) {
             _location=new Location(p);
         }

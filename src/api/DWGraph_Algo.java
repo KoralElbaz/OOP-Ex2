@@ -46,10 +46,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
                 double weight = edge.getWeight();
                 ans.connect(src,dest,weight);
             }
-//            for (node_data ni:this.myGraph.getV()){
-//                double dist=this.myGraph.getEdge(node.getKey(),ni.getKey()).getWeight();
-//                help.connect(node.getKey(),ni.getKey(),dist);
-//            }
+
         }
 
     }
