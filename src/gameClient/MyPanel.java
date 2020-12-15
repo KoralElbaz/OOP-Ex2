@@ -222,12 +222,21 @@ public class MyPanel extends JPanel {
         {
             ImageIcon pika = new ImageIcon("./data/pika1.png");
             String id=(String)JOptionPane.showInputDialog(
+<<<<<<< HEAD
                     null,
                     "Please, enter your id number: ",
                     "ID",
                     JOptionPane.QUESTION_MESSAGE,
                     pika,
                     null,
+=======
+               null,
+               "Please, enter your id number: ",
+               "ID",
+               JOptionPane.QUESTION_MESSAGE,
+               pika,
+               null,
+>>>>>>> 647d9ae46f53826a35b327559f13c3d63639866f
                     0
             );
             return id;

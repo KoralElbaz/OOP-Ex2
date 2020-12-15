@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -130,40 +131,7 @@ public class DWGraph_AlgoTest {
         assertTrue(g.isConnected());
     }
 
-    @Test
-    public void testShortestDist() {
 
-        //distance between nodes in null graph--->path doesnt exist.
-        directed_weighted_graph g0 = new DWGraph_DS();
-        dw_graph_algorithms g=new DWGraph_Algo();
-        g.init(g0);
-        assertEquals(-1,g.shortestPathDist(1,2));
-
-        //check distance between exist nodes without edges.--->path doesnt exist.
-        for (int i = 0; i < 5; i++) {
-            g.getGraph().addNode(new DWGraph_DS.Node(i));
-        }
-        assertEquals(-1,g.shortestPathDist(1,2));
-
-        //check distance between src==dest-->should be 0
-        assertEquals(0,g.shortestPathDist(1,1));
-
-        //shortest dist should be zero
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++)
-                g.getGraph().connect(i, j, 0);
-        }
-
-        assertEquals(0,g.shortestPathDist(0,3));
-
-        //check what should happen when there is unconnected Node--->path doesnt exist.
-        g.getGraph().addNode(new DWGraph_DS.Node(4));
-        Assertions.assertEquals(-1,g.shortestPathDist(0,4));
-
-        //check what happen when dest doesnt exist--->path doesnt exist
-        Assertions.assertEquals(-1,g.shortestPathDist(1,6));
-
-    }
 
 
     @Test

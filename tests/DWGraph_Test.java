@@ -1,14 +1,10 @@
 
 
-import api.DWGraph_DS;
-import api.directed_weighted_graph;
-import api.edge_data;
-import api.node_data;
+import api.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -18,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class DWGraph_Test {
+    public static int _count = 0;
+
     //creat graph
     public static directed_weighted_graph graph_creator(int v_size, int e_size) {
         directed_weighted_graph g = new DWGraph_DS();
@@ -73,6 +71,90 @@ public class DWGraph_Test {
     /**
      * Checks whether the Default constructor is working properly
      */
+
+    @Test
+    public void testShortestDist() {
+
+        //distance between nodes in null graph--->path doesnt exist.
+        directed_weighted_graph g0 = new DWGraph_DS();
+        dw_graph_algorithms g=new DWGraph_Algo();
+        g.init(g0);
+        assertEquals(-1,g.shortestPathDist(1,2));
+
+        //check distance between exist nodes without edges.--->path doesnt exist.
+        for (int i = 0; i < 5; i++) {
+            g.getGraph().addNode(new DWGraph_DS.Node(i));
+        }
+        assertEquals(-1,g.shortestPathDist(1,2));
+
+        //check distance between src==dest-->should be 0
+        assertEquals(0,g.shortestPathDist(1,1));
+
+        //shortest dist should be zero
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++)
+                g.getGraph().connect(i, j, 0);
+        }
+
+        assertEquals(0,g.shortestPathDist(0,3));
+
+        //check what should happen when there is unconnected Node--->path doesnt exist.
+        g.getGraph().addNode(new DWGraph_DS.Node(4));
+        Assertions.assertEquals(-1,g.shortestPathDist(0,4));
+
+        //check what happen when dest doesnt exist--->path doesnt exist
+        Assertions.assertEquals(-1,g.shortestPathDist(1,6));
+
+    }
+
+    @Test
+    public void TEST12() {
+        directed_weighted_graph g1 = graph_creator(11, 0);
+        dw_graph_algorithms ag1 = new DWGraph_Algo();
+        ag1.init(g1);
+        for(int i=0; i<10; i++)
+            g1.connect(i, i+1, i+1);
+
+        for(int i=0; i<g1.nodeSize()-1; i++) {
+            assertNotNull(ag1.shortestPath(i, i+1));
+            assertEquals(ag1.shortestPathDist(i, i+1), i+1);
+            assertEquals(ag1.shortestPathDist(0, i), _count+=i);
+        }
+        g1.addNode(new DWGraph_DS.Node(11));
+        for(int i=0; i<10; i++) {
+            assertNull(ag1.shortestPath(i, 11)); // Null Pointer Exception -> FIXED! Added Condition (if)
+            assertEquals(ag1.shortestPathDist(i,  11), -1);
+        }
+
+        assertEquals(ag1.shortestPathDist(0, 6), 21);
+        assertEquals(ag1.shortestPathDist(0, 8), 36);
+
+        List<Integer> myList = new ArrayList<Integer>();
+        for(int i=0; i<9; i++)
+            myList.add(i);
+        assertTrue(checkPath(ag1.shortestPath(0, 8), myList));
+
+        g1.connect(0, 11, 1);
+        g1.connect(10, 11, 1);
+
+        assertEquals(ag1.shortestPathDist(0, 8), ag1.shortestPathDist(0, 6), 21); // Distance: 21
+
+        List<Integer> myList2 = new ArrayList<Integer>();
+        myList2.add(0);
+        for(int i=11; i>7; i--)
+            myList2.add(i);
+        assertTrue(checkPath(ag1.shortestPath(0, 8), myList2));
+    }
+    private static boolean checkPath(List<node_data> list, List<Integer> index) {
+        if(list.size() == index.size())
+            for(int i=0; i<list.size(); i++)
+                if(list.get(i).getKey() != index.get(i))
+                    return false;
+        return true;
+    }
+
+
+
     @Test
     public void DGraph() {
         directed_weighted_graph d=new DWGraph_DS();

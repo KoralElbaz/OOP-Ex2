@@ -22,6 +22,7 @@ public class MyFrame extends JFrame {
 		super(a);
 		int _ind = 0;
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+<<<<<<< HEAD
 		//this.setTitle("Pokemon Game");
 
 //		this.setLayout(new FlowLayout());
@@ -34,6 +35,9 @@ public class MyFrame extends JFrame {
 //	public void actionPerformed(ActionEvent e) {
 //		if(e.getSource()==button)
 //			this.add(jPanel);
+=======
+
+>>>>>>> 647d9ae46f53826a35b327559f13c3d63639866f
 	}
 	public void update(Arena ar)
 	{
@@ -51,6 +55,7 @@ public class MyFrame extends JFrame {
 	}
 
 
+<<<<<<< HEAD
 //	private void updateFrame() {
 //		Range rx = new Range(20,this.getWidth()-20);
 //		Range ry = new Range(this.getHeight()-10,150);
@@ -154,3 +159,6 @@ public class MyFrame extends JFrame {
 //	//	g.drawString(""+n.getKey(), fp.ix(), fp.iy()-4*r);
 //	}
 }
+=======
+}
+>>>>>>> 647d9ae46f53826a35b327559f13c3d63639866f
