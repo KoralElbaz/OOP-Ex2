@@ -7,6 +7,7 @@ import api.node_data;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -25,8 +26,7 @@ public class CL_Agent {
 	private long _sg_dt;
 
 	private double _value;
-	private List<node_data> shortestPath;
-	private int currNodeInPath;
+
 
 	public CL_Agent(directed_weighted_graph g, int start_node) {
 		_gg = g;
@@ -164,6 +164,9 @@ public class CL_Agent {
 	public edge_data get_curr_edge() {
 		return this._curr_edge;
 	}
+	public void set_curr_edge(edge_data e) {
+		_curr_edge=e;
+	}
 	public long get_sg_dt() {
 		return _sg_dt;
 	}
@@ -171,22 +174,5 @@ public class CL_Agent {
 		this._sg_dt = _sg_dt;
 	}
 
-	public List<node_data> getShortestPath() {
-		return shortestPath;
-	}
 
-	public void setShortestPath(List<node_data> shortestPath) {
-		this.shortestPath = shortestPath;
-		currNodeInPath=0;
-	}
-	public int getNextInPath(){
-		int ans= shortestPath.get(currNodeInPath).getKey();
-		currNodeInPath++;
-		if(currNodeInPath==shortestPath.size() ){
-			shortestPath=null;
-		}
-
-		return ans;
-
-	}
 }

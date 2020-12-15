@@ -17,7 +17,7 @@ public class MyFrame extends JFrame {
 	private Arena _ar;
 	MyPanel jPanel;
 
-	MyFrame(String a)
+	public MyFrame(String a)
 	{
 		super(a);
 		int _ind = 0;
