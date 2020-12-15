@@ -3,6 +3,8 @@ import api.edge_data;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 public class CL_Pokemon {
 	private edge_data _edge;
 	private double _value;
@@ -10,16 +12,23 @@ public class CL_Pokemon {
 	private Point3D _pos;
 	private double min_dist;
 	private int min_ro;
+	private boolean isVisit=false;
 
-	
 	public CL_Pokemon(Point3D p, int t, double v, double s, edge_data e) {
 		_type = t;
-	//	_speed = s;
+		//	_speed = s;
 		_value = v;
 		set_edge(e);
 		_pos = p;
 		min_dist = -1;
 		min_ro = -1;
+	}
+	public boolean getIsVisit() {
+		return this.isVisit;
+	}
+
+	public void setIsVisit(boolean b) {
+		this.isVisit = b;
 	}
 	public static CL_Pokemon init_from_json(String json) {
 		CL_Pokemon ans = null;
@@ -46,7 +55,7 @@ public class CL_Pokemon {
 		return _pos;
 	}
 	public int getType() {return _type;}
-//	public double getSpeed() {return _speed;}
+	//	public double getSpeed() {return _speed;}
 	public double getValue() {return _value;}
 
 	public double getMin_dist() {
@@ -87,5 +96,8 @@ public class CL_Pokemon {
 		else return getDest();
 	}
 
-
+	@Override
+	public int hashCode() {
+		return Objects.hash(_edge, _value, _type, _pos, min_dist, min_ro, isVisit);
+	}
 }
