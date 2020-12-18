@@ -1,6 +1,12 @@
 # ex2
 
-### this project deals with directional weighted graph, we used three interfaces to implement the graph properties in the class. 
+### The project is divided into two parts: 
+
+#### - part one deals with directional weighted graph, we used three  interfaces to implement the graph properties in the class. 
+#### - part two deals with pokimon game שhich includes several departments within it.
+
+   # part one: directional weighted graph
+   
 
 #### the interfces and their implements: 
  1. **`node_data`** - This interface represents the data of a node in an unweighted graph.
@@ -46,9 +52,18 @@ while priority queue is not empty we will extract the min node from the priority
 For adjacent vertex v, if v is not in SPT and v.tag>u.tag + edge(u,v) weight, then v is updated so that v.tag  = u.tag + edge(u,v) weight and will be added to the priority queue, and after that we will add the current vertex and its neighbor to the "pred" hashMap for save the path.
 The algorithm ends when the new vertex v is the destination or when we have visited all the vertices.
 
-# pokimon game
+# part two: pokimon game
+in this part there are some departments:
+
+ 1. Arena-
+ 2. CL_Pokimon-
+ 3. CL_Agent-
+ 4. Ex2-
+ 5. MyFrame-
+ 6. MyPanel-
+
+#  brief explanation of the game
 ## welcome to our game
-Our project represents a game.
 
 In our game there are 24 stages (scenarios) each of them has a different starting point.
 
