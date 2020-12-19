@@ -75,10 +75,11 @@ At the end of each game you can see the number of points and moves we've made.
 
 another way is at the terminal. :
 
-after the window will open the game will start: 
+### second step:  the window will open and the game will start: 
 ![for example](https://github.com/KoralElbaz/OOP-Ex2/blob/master/data/game.png)
 
-At the end of each game you can see the number of points and moves we've made.
+### Last step:  at the end of game you can see the number of points and moves we've made.
+
 ![](https://github.com/KoralElbaz/OOP-Ex2/blob/master/data/grade.png)
 
 # Enjoy !! 
