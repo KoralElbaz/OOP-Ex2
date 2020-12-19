@@ -77,12 +77,8 @@ public class Arena {
 	public directed_weighted_graph getGraph() {
 		return _gg;
 	}
-	public List<String> get_info() {
-		return _info;
-	}
-	public void set_info(List<String> _info) {
-		this._info = _info;
-	}
+	
+
 
 	////////////////////////////////////////////////////
 	public static List<CL_Agent> getAgents(String aa, directed_weighted_graph gg) {
@@ -101,6 +97,18 @@ public class Arena {
 		}
 		return ans;
 	}
+
+//	public static String gameLevel(String l){
+//		JSONObject str = null;
+//		try {
+//			JSONObject t=new JSONObject(l);
+//			str=t.getJSONObject("game_level");
+//		}
+//		catch (JSONException e) {
+//			e.printStackTrace();
+//		}
+//		return str;
+//	}
 	public static ArrayList<CL_Pokemon> json2Pokemons(String fs) {
 		ArrayList<CL_Pokemon> ans = new  ArrayList<CL_Pokemon>();
 		try {
@@ -187,4 +195,18 @@ public class Arena {
 		this.time=t;
 	}
 	public String getTime(){return time;}
+
+	public void set_info(String s, int id) {
+		if(_info.size()!=id){
+			_info.remove(id);
+		}
+		_info.add(id,s);
+	}
+
+	public List<String> get_info() {
+		return _info;
+	}
+	public void set_info(List<String> _info) {
+		this._info = _info;
+	}
 }

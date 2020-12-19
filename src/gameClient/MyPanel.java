@@ -21,15 +21,10 @@ public class MyPanel extends JPanel {
     private Arena _ar;
     private gameClient.util.Range2Range _w2f;
     private Graphics2D g2D;
-    private Image agent;
-    private Image pokemon;
-    private Image background, info, remote;
-
-    private JFrame popUp;
+    private Image agent, pokemon, background, info, remote;
 
     public MyPanel(Arena ar) {
 
-        //popUpWin();
         this._ar = ar;
         this.agent = new ImageIcon("./data/ash.png").getImage();
         this.pokemon = new ImageIcon("./data/pika9.png").getImage();
@@ -38,48 +33,6 @@ public class MyPanel extends JPanel {
         this.remote = new ImageIcon("./data/data.png").getImage();
 
     }
-
-    public MyPanel() {
-
-    }
-
-//    public void popUpWin(){
-//        popUp = new JFrame("popUp");
-//        popUp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        popUp.setBounds(60,5,400,200);
-//
-//        Container container=popUp.getContentPane();
-//        container.setLayout(null);
-//
-//        JLabel logo=new JLabel("Please ,enter ID number.");
-//        logo.setBounds(60,5,250,30);
-//
-//        JLabel id=new JLabel("Id:");
-//        id.setBounds(20,30,250,30);
-//
-//        JTextField idToWrite=new JTextField();
-//        idToWrite.setBounds(65,30,250,30);
-//
-//        JButton button=new JButton("Start");
-//        button.setBounds(150,90,100,30);
-//        button.addActionListener(new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if(e.getSource()==button) {
-//                    JOptionPane.showMessageDialog(null,"Good Lack!");
-//                }
-//            }
-//        });
-//
-//        container.add(logo);
-//        container.add(id);
-//        container.add(idToWrite);
-//        container.add(button);
-//
-//        popUp.setVisible(true);
-//
-//    }
-
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -140,7 +93,7 @@ public class MyPanel extends JPanel {
         Iterator<node_data> iter = gg.getV().iterator();
         while (iter.hasNext()) {
             node_data n = iter.next();
-            g.setColor(Color.lightGray);
+            g.setColor(Color.WHITE);
             drawNode(n, 5, g);
             Iterator<edge_data> itr = gg.getE(n.getKey()).iterator();
             while (itr.hasNext()) {
@@ -168,6 +121,7 @@ public class MyPanel extends JPanel {
         g2D = (Graphics2D) g;
         geo_location pos = n.getLocation();
         geo_location fp = this._w2f.world2frame(pos);
+        g.setColor(Color.WHITE);
         g.fillOval((int) fp.x() - r, (int) fp.y() - r, 2 * r, 2 * r);
         g.drawString("" + n.getKey(), (int) fp.x(), (int) fp.y() - 4 * r);
     }
@@ -190,24 +144,22 @@ public class MyPanel extends JPanel {
     private void drawInfo(Graphics g) {
         g2D = (Graphics2D) g;
         List<String> str = _ar.get_info();
-        String dt = "none";
-        for (int i = 0; i < str.size(); i++) {
-            g.drawString(str.get(i) + " dt: " + dt, 100, 60 + i * 20);
-        }
-        g2D.drawImage(remote, this.getWidth() - 250, 0, 250, 250, null);
 
-        int x0 = this.getWidth() / 70;
+        int x0 =this.getWidth() - 250;
         int y0 = this.getHeight() / 20;
+        g2D.setFont(new Font("Ariel", Font.BOLD, (this.getHeight() + this.getWidth()) / 120));
+       g2D.setColor(Color.WHITE);
+        //g2D.drawImage(remote, this.getWidth() - 350, 0, 350, 250, null);
 
-        g2D.drawString(_ar.getTime(), x0 * 5, y0);
-        g2D.setFont(new Font("Ariel", Font.BOLD, (this.getHeight() + this.getWidth()) / 90));
-
-        double j = ((this.getHeight() * this.getWidth()) / 50000);
+        double j = ((this.getHeight() * this.getWidth()) / 40000);
         int k = 1;
         for (int i = 0; i < str.size(); i++) {
-            g2D.drawString(str.get(i), x0 * 5, (int) (y0 + k * j) + 15);
+            g2D.drawString(str.get(i), x0 , (int) (y0 + k * j) + 15);
             k++;
         }
+        g2D.drawString(_ar.getTime(), x0, y0+12);
+
+
     }
 
 
@@ -218,8 +170,9 @@ public class MyPanel extends JPanel {
 
 
     public static class PopUpWin {
-        public static String getId()
+        public static int getId()
         {
+            int ID=0;
             ImageIcon pika = new ImageIcon("./data/pika1.png");
             String id=(String)JOptionPane.showInputDialog(
                     null,
@@ -228,14 +181,22 @@ public class MyPanel extends JPanel {
                     JOptionPane.QUESTION_MESSAGE,
                     pika,
                     null,
-                    0
+                    ""
             );
-            return id;
+            if(id==null) System.exit(0);
+            try{
+                ID=Integer.parseInt(id);
+            }
+            catch (Exception e) {
+                System.out.println("Invalid value");
+            }
+            return ID;
         }
 
-        public static String getLevel()
+        public static int getLevel()
         {
-            ImageIcon game = new ImageIcon("./data/game.png");
+            int LEVEL=0;
+            ImageIcon game = new ImageIcon("./data/game2.png");
             String[] options ={"0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23"};
             String sen= (String) JOptionPane.showInputDialog(
                     null,
@@ -246,7 +207,14 @@ public class MyPanel extends JPanel {
                     options,
                     options[0]
             );
-            return sen;
+            if(sen==null) System.exit(0);
+            try{
+                LEVEL=Integer.parseInt(sen);
+            }
+            catch (Exception e) {
+                System.out.println("Invalid value");
+            }
+            return LEVEL;
         }
 
     }
