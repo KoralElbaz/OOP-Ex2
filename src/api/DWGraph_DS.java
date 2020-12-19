@@ -5,6 +5,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+/**
+ * This class implement interface that represents a directional weighted graph.
+ * The interface has a road-system or communication network in mind -
+ * and should support a large number of nodes (over 100,000).
+ * The implementation  based on an HashMap representation.
+ *
+ */
+
 public class DWGraph_DS implements directed_weighted_graph {
     private HashMap<Integer, node_data> nodes;
     private HashMap<Integer, HashMap<Integer, edge_data>> neighbors;
@@ -20,13 +28,23 @@ public class DWGraph_DS implements directed_weighted_graph {
         this.mc=0;
     }
 
-    //this function return node_data by the node key.
+    /**
+     * returns the node_data by the node_key,
+     * @param key - the node_id
+     * @return the node_data by the node_key, null if none.
+     */
     @Override
     public node_data getNode(int key) {
         return nodes.containsKey(key)?nodes.get(key):null;
     }
 
-    //this function return edge_data by the src and dest.
+    /**
+     * returns the data of the edge (src,dest), null if none.
+     * @param src
+     * @param dest
+     * @return edge_data by the src_edge and dest_edge.
+     */
+
     @Override
     public edge_data getEdge(int src, int dest) {
         if(this.edgeSize()==0)
@@ -38,23 +56,34 @@ public class DWGraph_DS implements directed_weighted_graph {
         return null;
     }
 
-    //this function add a new node to the graph with the given key.
-    //if there is already a node with such a key there is no action.
+    /**
+     * adds a new node to the graph with the given node_data.
+     * if this node  already exist in the graph there is no action.
+     * @param n
+     */
+
     @Override
     public void addNode(node_data n) {
         if(n!=null && !nodes.containsKey(n.getKey())){
             mc++;
             nodes.put(n.getKey(),n);
+
             HashMap<Integer, edge_data> newMapForNi = new HashMap<>();
             HashMap<Integer, edge_data> newMapForCon = new HashMap<>();
+
             neighbors.put(n.getKey(),newMapForNi);
             connectToMe.put(n.getKey(),newMapForCon);
         }
     }
 
-    //this function connect an edge between node1 and node2,
-    // with an edge with weight >=0.
-    //if the edge node1-node2 already exists - the method simply updates the weight of the edge.
+    /**
+     * Connects an edge with weight w between node src to node dest.
+     * if the edge src-dest already exists - the method simply updates the weight of the edge.
+     * @param src - the source of the edge.
+     * @param dest - the destination of the edge.
+     * @param w - positive weight representing the cost (aka time, price, etc) between src-->dest.
+     */
+
     @Override
     public void connect(int src, int dest, double w) {
         if(src==dest) return;
@@ -75,15 +104,23 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     }
 
-    // this function return a pointer (shallow copy) for a
-    // collection representing all the nodes in the graph.
+    /**
+     * This method returns a pointer (shallow copy) for the
+     * collection representing all the nodes in the graph.
+     * @return Collection<node_data>
+     */
+
     @Override
     public Collection<node_data> getV() {
         return nodes.values();
     }
 
-    //This function returns a pointer (shallow copy) for the
-	// collection representing all the edges starting at the given node
+
+    /**
+     * This method returns a pointer (shallow copy) for the
+     * collection representing all the edges  starting at the given node.
+     * @return Collection<edge_data>
+     */
 
     @Override
     public Collection<edge_data> getE(int node_id) {
@@ -91,8 +128,12 @@ public class DWGraph_DS implements directed_weighted_graph {
         return new ArrayList<>();
     }
 
-    // this function delete the node (with the given ID) from the graph -
-    // and removes all edges which starts or ends at this node.
+    /**
+     * Deletes the node (with the given ID) from the graph -
+     * and removes all edges which starts or ends at this node.
+     * @return the data of the removed node (null if none).
+     * @param key
+     */
     @Override
     public node_data removeNode(int key) {
 
@@ -124,8 +165,14 @@ public class DWGraph_DS implements directed_weighted_graph {
         return toRemove;
     }
 
-    //this function delete the edge from the graph,
-    //if the edge doesnt exist there is no action.
+    /**
+     * Deletes the edge from the graph,
+     * if the edge doesnt exist there is no action.
+     * @param src
+     * @param dest
+     * @return the data of the removed edge (null if none).
+     */
+
     @Override
     public edge_data removeEdge(int src, int dest) {
         edge_data toRemove=neighbors.get(src).get(dest);
@@ -138,16 +185,27 @@ public class DWGraph_DS implements directed_weighted_graph {
         return toRemove;
     }
 
+    /** Returns the number of vertices (nodes) in the graph.
+     * @return
+     */
     @Override
     public int nodeSize() {
         return this.getV().size();
     }
+    /**
+     * Returns the number of edges .
+     * @return
+     */
 
     @Override
     public int edgeSize() {
         return countEdge;
     }
 
+    /**
+     * Returns the Mode Count - for testing changes in the graph.
+     * @return
+     */
     @Override
     public int getMC() {
         return mc;
@@ -172,9 +230,12 @@ public class DWGraph_DS implements directed_weighted_graph {
         return this.toString().equals(o.toString());
     }
 
-    //================================================================================//
-    // =====================================Node======================================//
-    //================================================================================//
+
+    /**
+     * This class implement interface that represents the set of operations applicable on a
+     * node (vertex) in a (directional) weighted graph.
+     *
+     */
     public static class Node implements node_data, Serializable {
 
         private int _key;
@@ -192,45 +253,91 @@ public class DWGraph_DS implements directed_weighted_graph {
             this.setWeight(Double.MAX_VALUE);
 
         }
+
+        /**
+         * Returns the key (id) associated with this node.
+         * @return
+         */
+
         @Override
         public int getKey() {
             return _key;
         }
 
+        /** Returns the location of this node, if
+         * none return null.
+         *
+         * @return
+         */
         @Override
         public geo_location getLocation() {
             return _location;
         }
 
+        /** Allows changing this node's location.
+         * @param p - new new location  (position) of this node.
+         */
         @Override
         public void setLocation(geo_location p) {
             _location=new Location(p);
         }
+
+        /**
+         * Returns the weight associated with this node.
+         * @return
+         */
 
         @Override
         public double getWeight() {
             return _weight;
         }
 
+        /**
+         * Allows changing this node's weight.
+         * @param w - the new weight
+         */
+
         @Override
         public void setWeight(double w) {
             _weight=w;
         }
+
+        /**
+         * Returns the remark (meta data) associated with this node.
+         * @return
+         */
 
         @Override
         public String getInfo() {
             return _info;
         }
 
+        /**
+         * Allows changing the remark (meta data) associated with this node.
+         * @param s
+         */
+
         @Override
         public void setInfo(String s) {
             _info=s;
         }
 
+        /**
+         * Temporal data (aka color: e,g, white, gray, black)
+         * which can be used be algorithms
+         * @return
+         */
+
         @Override
         public int getTag() {
             return _tag;
         }
+
+        /**
+         * Allows setting the "tag" value for temporal marking an node - common
+         * practice for marking by algorithms.
+         * @param t - the new value of the tag
+         */
 
         @Override
         public void setTag(int t) {
@@ -258,9 +365,12 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     }
 
-    //================================================================================//
-    //======================================Edge======================================//
-    //================================================================================//
+    /**
+     * This class implements interface that represents the set of operations applicable on a
+     * directional edge(src,dest) in a (directional) weighted graph.
+     *
+     */
+
     public static class Edge implements edge_data, Serializable {
         private int _src;
         private int _dest;
@@ -278,31 +388,60 @@ public class DWGraph_DS implements directed_weighted_graph {
         }
 
 
+        /**
+         * Returns the id of the source node of this edge.
+         * @return
+         */
+
         @Override
         public int getSrc() {
             return _src;
         }
+
+        /**
+         * Returns the id of the destination node of this edge
+         * @return
+         */
 
         @Override
         public int getDest() {
             return _dest;
         }
 
+        /**
+         * Returns he weight of this edge (positive value).
+         * @return
+         */
+
         @Override
         public double getWeight() {
             return _weight;
         }
 
+        /**
+         * Returns the remark (meta data) associated with this edge.
+         * @return
+         */
         @Override
         public String getInfo() {
             return _info;
         }
+
+        /**
+         * Allows changing the remark (meta data) associated with this edge.
+         * @param s
+         */
 
         @Override
         public void setInfo(String s) {
             _info=s;
         }
 
+        /**
+         * Returns temporal data (aka color: e,g, white, gray, black)
+         * which can be used be algorithms
+         * @return
+         */
         @Override
         public int getTag() {
             return _tag;

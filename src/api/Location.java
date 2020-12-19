@@ -2,6 +2,10 @@ package api;
 
 import java.util.StringTokenizer;
 
+/**
+ * This class implement interface that represents a geo location <x,y,z>, aka Point3D
+ */
+
 public class Location implements geo_location {
     private double _x;
     private double _y;
@@ -25,21 +29,37 @@ public class Location implements geo_location {
         _z=Double.parseDouble(st.nextToken());
     }
 
+    /**
+     * Returns the value of X.
+     * @return
+     */
     @Override
     public double x() {
         return _x;
     }
 
+    /**
+     * Returns the value of Y.
+     * @return
+     */
     @Override
     public double y() {
         return _y;
     }
 
+    /**
+     * Returns the value of Z.
+     * @return
+     */
     @Override
     public double z() {
         return _z;
     }
 
+    /**
+     * Returns the distance between two points.
+     * @return
+     */
     @Override
     public double distance(geo_location g) {
         double disX= Math.pow(_x-g.x(),2);

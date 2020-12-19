@@ -9,19 +9,44 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import org.json.JSONArray;
 
+/**
+ * This interface represents a Directed (positive) Weighted Graph Theory Algorithms including:
+ * 0. clone(); (copy)
+ * 1. init(graph);
+ * 2. isConnected(); // strongly (all ordered pais connected)
+ * 3. double shortestPathDist(int src, int dest);
+ * 4. List<node_data> shortestPath(int src, int dest);
+ * 5. Save(file); // JSON file
+ * 6. Load(file); // JSON file
+ *
+ *
+ */
+
 public class DWGraph_Algo implements dw_graph_algorithms{
     private directed_weighted_graph myGraph;
 
+    /**
+     * Init the graph on which this set of algorithms operates on.
+     * @param g
+     */
     @Override
     public void init(directed_weighted_graph g) {
         this.myGraph=g;
     }
 
+    /**
+     * Return the underlying graph of which this class works.
+     * @return
+     */
     @Override
     public directed_weighted_graph getGraph() {
         return myGraph;
     }
 
+    /**
+     * Compute a deep copy of this weighted graph.
+     * @return
+     */
     @Override
     public directed_weighted_graph copy() {
         directed_weighted_graph ans=new DWGraph_DS();
@@ -29,7 +54,9 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         copyEdges(ans);
         return ans;
     }
-
+    /**
+     * copy the nodes from our graph to the other graph.
+     */
     private void copyNodes(directed_weighted_graph ans) {
         for (node_data node:this.myGraph.getV())
         {
@@ -37,6 +64,9 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         }
     }
 
+    /**
+     * copy the edges from our graph to the other graph.
+     */
     private void copyEdges(directed_weighted_graph ans) {
         for (node_data node:this.myGraph.getV())
         {
@@ -51,30 +81,58 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
     }
 
-
+    /**
+     * Returns true if and only if (iff) there is a valid path from each node to each
+     * other node.
+     * This method uses a dfs algorithm.
+     * @return
+     */
 
     @Override
     public boolean isConnected() {
-        if (myGraph.nodeSize()==0 || myGraph.nodeSize()==1) return true;
-        upDateInfo();
+        if (myGraph.nodeSize()==0 || myGraph.nodeSize()==1)
+            return true;
+
+        upDateInfo(); // update the info of this graph's nodes
+
         List<Integer> order= new ArrayList<>();
-        node_data curr=myGraph.getV().iterator().next();
-        dfs(myGraph, curr, order );
-        if(order.size()!= myGraph.nodeSize()) return false; //׳׳ ׳‘׳׳¢׳‘׳¨ ׳”׳¨׳׳©׳•׳ ׳׳ ׳¢׳‘׳¨׳ ׳• ׳¢׳ ׳›׳ ׳”׳§׳•׳“׳§׳•׳“׳™׳ ׳ ׳™׳×׳ ׳׳”׳₪׳¡׳™׳§
+
+        node_data curr=myGraph.getV().iterator().next(); //passing on the graph's nodes.
+
+        dfs(myGraph, curr, order ); ////check if the reverse graph is connected.
+
+        if(order.size()!= myGraph.nodeSize())
+            return false;
 
         directed_weighted_graph reverse= buildReverseGraph(myGraph);
-        upDateInfo();
+
+        upDateInfo(); // update the info of this graph's nodes
         order.clear();
-        dfs(reverse, curr, order );
-        if(order.size()!= myGraph.nodeSize()) return false;
+
+        dfs(reverse, curr, order ); //check if the reverse graph is connected.
+
+        if(order.size()!= myGraph.nodeSize())
+            return false;
+
         return true;
     }
 
+    /**
+     * Gets a graph and reverses the direction of its edges
+     * @param myGraph
+     * @return reverse graph.
+     */
     private directed_weighted_graph buildReverseGraph(directed_weighted_graph myGraph) {
         directed_weighted_graph newOne= new DWGraph_DS();
+
+        //copy all the nodes of the given graph.
         for( node_data node: myGraph.getV()){
             newOne.addNode(node);
         }
+
+        /*copy all the edges of the given graph and switches between
+        src and dest.*/
+
         for (node_data node: newOne.getV())
             for (edge_data edge: myGraph.getE(node.getKey())){
                 newOne.connect(edge.getDest(),edge.getSrc(),edge.getWeight()); //׳¨׳•׳•׳¨׳¡ ׳׳›׳ ׳”׳¦׳׳¢׳•׳× ׳׳—׳׳™׳₪׳™׳ ׳‘׳™׳ ׳“׳¡׳˜ ׳׳¡׳•׳¨׳¡
@@ -83,9 +141,17 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         return  newOne;
     }
 
+    /**
+     * Adds to the given list all the node are connect
+     * to him and indicates it.
+     * @param g
+     * @param curr
+     * @param l
+     */
     private void dfs(directed_weighted_graph g, node_data curr , List <Integer> l){
         curr.setInfo("Black");
-        for(edge_data edge: g.getE(curr.getKey())){ //׳‘׳׳•׳׳׳” ׳¢׳•׳‘׳¨׳™׳ ׳¢׳ ׳”׳©׳›׳ ׳™׳ , ׳‘׳•׳“׳§׳™׳ ׳׳ ׳”׳ ׳׳¡׳•׳׳ ׳™׳, ׳‘׳׳™׳“׳” ׳•׳׳ ׳©׳•׳׳—׳™׳ ׳׳•׳×׳ ׳׳׳׳’׳•׳¨׳™׳×׳ ׳”׳–׳” ׳©׳™׳¡׳•׳׳ ׳• ׳•׳’׳ ׳”׳©׳›׳ ׳™׳ ׳©׳׳”׳
+
+        for(edge_data edge: g.getE(curr.getKey())){
             node_data node= g.getNode(edge.getDest());
             if(node.getInfo().equals("White"))
                 dfs(g,node,l);
@@ -112,6 +178,13 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             node.setWeight(Double.MAX_VALUE);
         }
     }
+
+    /**
+     * Dijkstra algorithm- is an algorithm for finding the shortest paths between
+     * nodes in a graph
+     * @param src
+     * @return all the nodes of the graph and their predecessors.
+     */
     private HashMap<node_data,node_data> dijkstra(node_data src) {
         this.upDateWeight(); this.upDateInfo(); //up date the visited list and the min dist
         HashMap<node_data, node_data> parentChange = new HashMap<>();//save the pred that do the min dist
@@ -150,41 +223,74 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     }
 
 
+    /**
+     * returns the length of the shortest path between src to dest
+     * Note: if no such path --> returns -1
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return
+     */
+
     @Override
     public double shortestPathDist(int src, int dest) {
 
-        if(src==dest)return 0;
+        if(src==dest)
+            return 0;
 
         node_data v1=this.myGraph.getNode(src);
         node_data v2=this.myGraph.getNode(dest);
-        if(v1==null || v2==null)return -1;
 
-        this.dijkstra(v1);
-        if(v2.getWeight()==Double.MAX_VALUE)return -1;
+        if(v1==null || v2==null)
+            return -1;
+
+        this.dijkstra(v1); //Activating the algorithm
+        if(v2.getWeight()==Double.MAX_VALUE) //there is no path
+            return -1;
+
         else return v2.getWeight();
     }
 
 
+    /**
+     * returns the the shortest path between src to dest - as an ordered List of nodes:
+     * src--> n1-->n2-->...dest
+     * if no such path --> returns null;
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return
+     */
     @Override
     public List<node_data> shortestPath(int src, int dest) {
+
         node_data v1=this.myGraph.getNode(src);
         node_data v2=this.myGraph.getNode(dest);
         List<node_data> shortPath = new ArrayList<>();
-        if(v1==null || v2==null)return null;
-        if(src==dest)return shortPath;
+
+        //if the nodes are null its mean that they are don't exist.
+        if(v1==null || v2==null)
+            return null;
+
+        //empty list.
+        if(src==dest)
+            return shortPath;
+
         HashMap<node_data,node_data> pred=this.dijkstra(v1);
         node_data current= v2;
+
+        //add the nodes are on part of the shortest path.
         while(current!=v1 && pred.get(current)!=null)
         {
             shortPath.add(current);
             node_data ans=pred.get(current);
             current=ans;
         }
+
         if(pred.get(current)!=null)
         {
             shortPath.clear();
             return null;
         }
+
         shortPath.add(v1);
         return reverse(shortPath);
     }
@@ -204,7 +310,12 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     }
 
 
-
+    /**
+     * Saves this weighted directed graph to the given
+     * file name - in JSON format
+     * @param file - the file name (may include a relative path).
+     * @return true - iff the file was successfully saved
+     */
     @Override
     public boolean save(String file) {
         try
@@ -219,6 +330,15 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
         return true;
     }
+
+    /**
+     * This method load a graph to this graph algorithm.
+     * if the file was successfully loaded - the underlying graph
+     * of this class will be changed (to the loaded one), in case the
+     * graph was not loaded the original graph should remain "as is".
+     * @param file - file name of JSON file
+     * @return true - iff the graph was successfully loaded.
+     */
 
     @Override
     public boolean load(String file) {
@@ -255,14 +375,22 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         return this.toString().equals(o.toString());
     }
 
+    /**
+     * Returns a Jason file that represents the given graph
+     * @return
+     */
+
+    //Serialize
     private static class CreateJsonGraph {
-        //Serialize
+
         public JsonWriter graphToJson(directed_weighted_graph g,String file) throws IOException {
             FileWriter fileWriter= new FileWriter(file);
             JsonWriter writer = new JsonWriter(fileWriter);
             writer.beginObject();
             writer.name("Edges");
             writer.beginArray();
+
+            //passing the graph's edges and save the data.
             for (node_data node : g.getV()) {
                 for (edge_data edge: g.getE(node.getKey())) {
                     writer.beginObject();
@@ -275,6 +403,8 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             writer.endArray();
             writer.name("Nodes");
             writer.beginArray();
+
+            //passing the graph's nodes and save the data.
             for (node_data node : g.getV()) {
                 writer.beginObject();
                 writer.name("pos").value(node.getLocation().toString());
@@ -288,6 +418,10 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         }
     }
 
+    /**
+     * Returns a graph by reading a Jason file.
+     * @return
+     */
     //Deserialize
     private class CreateGraph implements JsonDeserializer<directed_weighted_graph> {
         @Override
@@ -297,12 +431,16 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             JsonObject jasonO= jsonElement.getAsJsonObject();
             JsonArray nodes= jasonO.get("Nodes").getAsJsonArray();
             JsonArray edges= jasonO.get("Edges").getAsJsonArray();
+
+            //add nodes to the graph.
             for (JsonElement node:nodes) {
                 int key=((JsonObject)node).get("id").getAsInt();
                 String pos=((JsonObject)node).get("pos").getAsString();
                 g.addNode(new DWGraph_DS.Node(key));
                 g.getNode(key).setLocation(new Location(pos));
             }
+
+            //add edges to the graph.
             for (JsonElement edge:edges) {
                 int key=((JsonObject)edge).get("src").getAsInt();
                 int dest=((JsonObject)edge).get("dest").getAsInt();
