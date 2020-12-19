@@ -58,6 +58,7 @@ public class Location implements geo_location {
 
     /**
      * Returns the distance between two points.
+     * @param  g other point location
      * @return
      */
     @Override

@@ -119,7 +119,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
     /**
      * Gets a graph and reverses the direction of its edges
-     * @param myGraph
+     * @param myGraph the graph we work on
      * @return reverse graph.
      */
     private directed_weighted_graph buildReverseGraph(directed_weighted_graph myGraph) {
@@ -135,7 +135,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
         for (node_data node: newOne.getV())
             for (edge_data edge: myGraph.getE(node.getKey())){
-                newOne.connect(edge.getDest(),edge.getSrc(),edge.getWeight()); //׳¨׳•׳•׳¨׳¡ ׳׳›׳ ׳”׳¦׳׳¢׳•׳× ׳׳—׳׳™׳₪׳™׳ ׳‘׳™׳ ׳“׳¡׳˜ ׳׳¡׳•׳¨׳¡
+                newOne.connect(edge.getDest(),edge.getSrc(),edge.getWeight());
             }
 
         return  newOne;
@@ -144,9 +144,9 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     /**
      * Adds to the given list all the node are connect
      * to him and indicates it.
-     * @param g
-     * @param curr
-     * @param l
+     * @param g te graph we work on
+     * @param curr current node
+     * @param l empty list
      */
     private void dfs(directed_weighted_graph g, node_data curr , List <Integer> l){
         curr.setInfo("Black");
@@ -182,7 +182,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     /**
      * Dijkstra algorithm- is an algorithm for finding the shortest paths between
      * nodes in a graph
-     * @param src
+     * @param src -current node
      * @return all the nodes of the graph and their predecessors.
      */
     private HashMap<node_data,node_data> dijkstra(node_data src) {

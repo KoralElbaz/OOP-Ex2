@@ -40,8 +40,8 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      * returns the data of the edge (src,dest), null if none.
-     * @param src
-     * @param dest
+     * @param src the source of the edge.
+     * @param dest the destination of the edge.
      * @return edge_data by the src_edge and dest_edge.
      */
 
@@ -59,7 +59,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     /**
      * adds a new node to the graph with the given node_data.
      * if this node  already exist in the graph there is no action.
-     * @param n
+     * @param n the node we add.
      */
 
     @Override
@@ -131,8 +131,8 @@ public class DWGraph_DS implements directed_weighted_graph {
     /**
      * Deletes the node (with the given ID) from the graph -
      * and removes all edges which starts or ends at this node.
+     * @param key the node key.
      * @return the data of the removed node (null if none).
-     * @param key
      */
     @Override
     public node_data removeNode(int key) {
@@ -168,8 +168,8 @@ public class DWGraph_DS implements directed_weighted_graph {
     /**
      * Deletes the edge from the graph,
      * if the edge doesnt exist there is no action.
-     * @param src
-     * @param dest
+     * @param src the source of the edge.
+     * @param dest the destination of the edge.
      * @return the data of the removed edge (null if none).
      */
 
@@ -314,7 +314,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * Allows changing the remark (meta data) associated with this node.
-         * @param s
+         * @param s the new info
          */
 
         @Override

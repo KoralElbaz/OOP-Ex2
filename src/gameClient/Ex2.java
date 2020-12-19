@@ -99,13 +99,13 @@ public class Ex2 implements  Runnable {
 
             for (int a = 0; a < cl_pok.size(); a++) {
 
-                Arena.updateEdge(cl_pok.get(a), g);//מיקום פוקימונים
+                Arena.updateEdge(cl_pok.get(a), g);
 
             }
 
             path = new HashMap<>();
 
-            for (int a = 0; a < agentsNum; a++) {//מיקום של הסוכנים
+            for (int a = 0; a < agentsNum; a++) {
                 int ind = a % cl_pok.size();
                 CL_Pokemon c = cl_pok.get(ind);
 
