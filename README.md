@@ -73,6 +73,12 @@ At the end of each game you can see the number of points and moves we've made.
 ![enter ID](https://github.com/KoralElbaz/OOP-Ex2/blob/master/data/id.png)
 ![choose Level](https://github.com/KoralElbaz/OOP-Ex2/blob/master/data/level.png)
 
-another way is at the terminal.
+another way is at the terminal. :
 
+after the window will open the game will start: 
+![for example](https://github.com/KoralElbaz/OOP-Ex2/blob/master/data/game.png)
 
+At the end of each game you can see the number of points and moves we've made.
+![](https://github.com/KoralElbaz/OOP-Ex2/blob/master/data/grade.png)
+
+# Enjoy !! 
