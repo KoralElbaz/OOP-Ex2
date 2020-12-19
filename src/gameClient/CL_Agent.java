@@ -10,7 +10,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
+/**
+ * This class build single agent
+ */
 public class CL_Agent {
 	public static final double EPS = 0.0001;
 	private static int _count = 0;
@@ -60,7 +62,12 @@ public class CL_Agent {
 			e.printStackTrace();
 		}
 	}
-	//@Override
+
+	/**
+	 * Returns the key of the src_Node of the agent edge.
+	 * @return
+	 */
+
 	public int getSrcNode() {return this._curr_node.getKey();}
 	public String toJSON() {
 		int d = this.getNextNode();
@@ -77,6 +84,11 @@ public class CL_Agent {
 	}
 	private void setMoney(double v) {_value = v;}
 
+	/**
+	 * Allows changing the agent next node he is going to.
+	 * @param dest the next node.
+	 * @return
+	 */
 	public boolean setNextNode(int dest) {
 		boolean ans = false;
 		int src = this._curr_node.getKey();
@@ -87,9 +99,21 @@ public class CL_Agent {
 		else {_curr_edge = null;}
 		return ans;
 	}
+
+
+	/**
+	 * Allows changing the agent current node
+	 * @param src the curr node.
+	 * @return
+	 */
 	public void setCurrNode(int src) {
 		this._curr_node = _gg.getNode(src);
 	}
+
+	/**
+	 * Returns if agent is moving
+	 * @return
+	 */
 	public boolean isMoving() {
 		return this._curr_edge!=null;
 	}
@@ -100,24 +124,40 @@ public class CL_Agent {
 		String ans=""+this.getID()+","+_pos+", "+isMoving()+","+this.getValue();
 		return ans;
 	}
+
+	/**
+	 * Returns agent id.
+	 * @return
+	 */
 	public int getID() {
 		// TODO Auto-generated method stub
 		return this._id;
 	}
 
+	/**
+	 * Returnes agent position.
+	 * @return
+	 */
 	public geo_location getLocation() {
 		// TODO Auto-generated method stub
 		return _pos;
 	}
 
 
+	/**
+	 * Returnes agent value.
+	 * @return
+	 */
 	public double getValue() {
 		// TODO Auto-generated method stub
 		return this._value;
 	}
 
 
-
+	/**
+	 * Returns agent next node.
+	 * @return
+	 */
 	public int getNextNode() {
 		int ans = -2;
 		if(this._curr_edge==null) {
@@ -128,16 +168,34 @@ public class CL_Agent {
 		return ans;
 	}
 
+	/**
+	 * Returns agent speed.
+	 * @return
+	 */
 	public double getSpeed() {
 		return this._speed;
 	}
 
+	/**
+	 * Allows changing the agent current node
+	 * @param v the desired speed.
+	 */
 	public void setSpeed(double v) {
 		this._speed = v;
 	}
+
+	/**
+	 * Returns the current pokemon that agent go to.
+	 * @return
+	 */
 	public CL_Pokemon get_curr_fruit() {
 		return _curr_fruit;
 	}
+
+	/**
+	 * Allows changing the current pokemon that agent go to.
+	 * @param curr_fruit the desired pokemon
+	 */
 	public void set_curr_fruit(CL_Pokemon curr_fruit) {
 		this._curr_fruit = curr_fruit;
 	}
@@ -159,9 +217,18 @@ public class CL_Agent {
 		this.set_sg_dt(ddt);
 	}
 
+	/**
+	 * Returns the current edge the agent is on.
+	 * @return
+	 */
 	public edge_data get_curr_edge() {
 		return this._curr_edge;
 	}
+
+	/**
+	 * Allows changing the current edge the agent is on.
+	 * @param e desired edge
+	 */
 	public void set_curr_edge(edge_data e) {
 		_curr_edge=e;
 	}

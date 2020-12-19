@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import java.util.Objects;
 
 /**
- * This class build single agent
+ * This class build single pokemon
  */
 public class CL_Pokemon {
 	private edge_data _edge;
@@ -98,21 +98,7 @@ public class CL_Pokemon {
 		return _value;
 	}
 
-//	public double getMin_dist() {
-//		return min_dist;
-//	}
-//
-//	public void setMin_dist(double mid_dist) {
-//		this.min_dist = mid_dist;
-//	}
-//
-//	public int getMin_ro() {
-//		return min_ro;
-//	}
-//
-//	public void setMin_ro(int min_ro) {
-//		this.min_ro = min_ro;
-//	}
+
 	/**
 	 * Returns the key of the src_Node of the Pokemon edge.
 	 * @return

@@ -16,81 +16,48 @@ import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * this department is responsible for drawing all the game data
+ * and graphics to the user
+ */
 public class MyPanel extends JPanel {
     private game_service game;
     private Arena _ar;
     private gameClient.util.Range2Range _w2f;
     private Graphics2D g2D;
-    private Image agent;
-    private Image pokemon;
-    private Image background, info, remote;
-
-    private JFrame popUp;
+    private Image agent, pokemon, background, info, remote;
 
     public MyPanel(Arena ar) {
 
-        //popUpWin();
         this._ar = ar;
         this.agent = new ImageIcon("./data/ash.png").getImage();
         this.pokemon = new ImageIcon("./data/pika9.png").getImage();
         this.background = new ImageIcon("./data/backG4.jpg").getImage();
-        this.info = new ImageIcon("./data/pokemon.png").getImage();
+        this.info = new ImageIcon("./data/pokemon2.png").getImage();
         this.remote = new ImageIcon("./data/data.png").getImage();
 
     }
 
-    public MyPanel() {
-
-    }
-
-//    public void popUpWin(){
-//        popUp = new JFrame("popUp");
-//        popUp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        popUp.setBounds(60,5,400,200);
-//
-//        Container container=popUp.getContentPane();
-//        container.setLayout(null);
-//
-//        JLabel logo=new JLabel("Please ,enter ID number.");
-//        logo.setBounds(60,5,250,30);
-//
-//        JLabel id=new JLabel("Id:");
-//        id.setBounds(20,30,250,30);
-//
-//        JTextField idToWrite=new JTextField();
-//        idToWrite.setBounds(65,30,250,30);
-//
-//        JButton button=new JButton("Start");
-//        button.setBounds(150,90,100,30);
-//        button.addActionListener(new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if(e.getSource()==button) {
-//                    JOptionPane.showMessageDialog(null,"Good Lack!");
-//                }
-//            }
-//        });
-//
-//        container.add(logo);
-//        container.add(id);
-//        container.add(idToWrite);
-//        container.add(button);
-//
-//        popUp.setVisible(true);
-//
-//    }
-
-
+    /**
+     * draws the background of the game.
+     * @param g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         paint(g);
     }
 
+    /**
+     * set the size of the panel and update in w2f.
+     */
     public void update() {
         updatePanel();
     }
 
+    /**
+     * set the size of the panel and update in w2f.
+     */
     public void updatePanel() {
         Range rx = new Range(20, this.getWidth() - 20);
         Range ry = new Range(this.getHeight() - 10, 150);
@@ -99,6 +66,11 @@ public class MyPanel extends JPanel {
         _w2f = Arena.w2f(g, frame);
     }
 
+    /**
+     * draws the background of the game according to the
+     * appropriate size and then the graph with the agents and Pokemon.
+     * @param g
+     */
     public void paint(Graphics g) {
         g2D = (Graphics2D) g;
         int w = this.getWidth();//
@@ -116,16 +88,25 @@ public class MyPanel extends JPanel {
         // Dimension screenSize=Toolkit.getDefaultToolkit().getScreenSize();
     }
 
+    /**
+     * Draws the Pokemon by taking the list of Pokemon from the arena.
+     * @param g
+     */
     private void drawPokemons(Graphics g) {
         g2D = (Graphics2D) g;
+
         List<CL_Pokemon> fs = _ar.getPokemons();
+       /* take the lost of pokemon
+       and going through it and then creating the
+        Pokemon in a graph by location
+        */
         if (fs != null) {
             Iterator<CL_Pokemon> itr = fs.iterator();
             while (itr.hasNext()) {
                 CL_Pokemon f = itr.next();
                 Point3D c = f.getLocation();
                 int r = 10;
-                //  if(f.getType()<0) {g.setColor(Color.orange);}
+
                 if (c != null) {
                     geo_location fp = this._w2f.world2frame(c);
                     g2D.drawImage(pokemon, (int) fp.x() - r, (int) fp.y() - r, 4 * r, 4 * r, null);
@@ -134,44 +115,80 @@ public class MyPanel extends JPanel {
         }
     }
 
+    /**
+     * Draws the graph from the arena.
+     * @param g
+     */
     private void drawGraph(Graphics g) {
+
+        /*take the graph from the arena and goes over
+        the vertices and nodes.
+         */
+
         g2D = (Graphics2D) g;
         directed_weighted_graph gg = _ar.getGraph();
         Iterator<node_data> iter = gg.getV().iterator();
+
         while (iter.hasNext()) {
             node_data n = iter.next();
-            g.setColor(Color.lightGray);
+            g.setColor(Color.WHITE);
+
+            //send to function that draw nodes.
             drawNode(n, 5, g);
             Iterator<edge_data> itr = gg.getE(n.getKey()).iterator();
             while (itr.hasNext()) {
                 edge_data e = itr.next();
                 g2D.setColor(Color.lightGray);
 
+                //send to function that draw edges.
                 drawEdge(e, g2D);
             }
         }
     }
 
+    /**
+     * Draws the graph edges.
+     * @param e
+     * @param g
+     */
     private void drawEdge(edge_data e, Graphics g) {
         g2D = (Graphics2D) g;
         directed_weighted_graph gg = _ar.getGraph();
+
+        /*
+        maintains the side according to the
+        source and destination geo_location
+         */
+
         geo_location s = gg.getNode(e.getSrc()).getLocation();
         geo_location d = gg.getNode(e.getDest()).getLocation();
         geo_location s0 = this._w2f.world2frame(s);
         geo_location d0 = this._w2f.world2frame(d);
+
         g2D.setStroke(new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         g2D.drawLine((int) s0.x(), (int) s0.y(), (int) d0.x(), (int) d0.y());
 
     }
 
+    /**
+     * Draws the graph nodes.
+     * @param n
+     * @param r
+     * @param g
+     */
     private void drawNode(node_data n, int r, Graphics g) {
         g2D = (Graphics2D) g;
         geo_location pos = n.getLocation();
         geo_location fp = this._w2f.world2frame(pos);
+        g.setColor(Color.WHITE);
         g.fillOval((int) fp.x() - r, (int) fp.y() - r, 2 * r, 2 * r);
         g.drawString("" + n.getKey(), (int) fp.x(), (int) fp.y() - 4 * r);
     }
 
+    /**
+     * Draws the agents.
+     * @param g
+     */
     private void drawAgants(Graphics g) {
         g2D = (Graphics2D) g;
         List<CL_Agent> rs = _ar.getAgents();
@@ -187,39 +204,44 @@ public class MyPanel extends JPanel {
         }
     }
 
+    /**
+     * Draws the info.
+     * @param g
+     */
     private void drawInfo(Graphics g) {
         g2D = (Graphics2D) g;
         List<String> str = _ar.get_info();
-        String dt = "none";
-        for (int i = 0; i < str.size(); i++) {
-            g.drawString(str.get(i) + " dt: " + dt, 100, 60 + i * 20);
-        }
-        g2D.drawImage(remote, this.getWidth() - 250, 0, 250, 250, null);
 
-        int x0 = this.getWidth() / 70;
+        int x0 =this.getWidth() - 250;
         int y0 = this.getHeight() / 20;
+        g2D.setFont(new Font("Ariel", Font.BOLD, (this.getHeight() + this.getWidth()) / 120));
+        g2D.setColor(Color.WHITE);
 
-        g2D.drawString(_ar.getTime(), x0 * 5, y0);
-        g2D.setFont(new Font("Ariel", Font.BOLD, (this.getHeight() + this.getWidth()) / 90));
-
-        double j = ((this.getHeight() * this.getWidth()) / 50000);
+        double j = ((this.getHeight() * this.getWidth()) / 40000);
         int k = 1;
         for (int i = 0; i < str.size(); i++) {
-            g2D.drawString(str.get(i), x0 * 5, (int) (y0 + k * j) + 15);
+            g2D.drawString(str.get(i), x0 , (int) (y0 + k * j) + 15);
             k++;
         }
+        g2D.drawString(_ar.getTime(), x0, y0+12);
+
+
     }
 
 
-
-
-
-
-
-
+    /**
+     * This class represents a popup window that can be used to display an arbitrary view.
+     * The popup window is a floating container that appears on top of the current activity.
+     */
     public static class PopUpWin {
-        public static String getId()
+
+        /**
+         * Creates the first pop up window of the id request.
+         * @return
+         */
+        public static int getId()
         {
+            int ID=0;
             ImageIcon pika = new ImageIcon("./data/pika1.png");
             String id=(String)JOptionPane.showInputDialog(
                     null,
@@ -228,14 +250,26 @@ public class MyPanel extends JPanel {
                     JOptionPane.QUESTION_MESSAGE,
                     pika,
                     null,
-                    0
+                    ""
             );
-            return id;
+            if(id==null) System.exit(0);
+            try{
+                ID=Integer.parseInt(id);
+            }
+            catch (Exception e) {
+                System.out.println("Invalid value");
+            }
+            return ID;
         }
 
-        public static String getLevel()
+        /**
+         * Creates second pop up window of the scenario request.
+         * @return
+         */
+        public static int getLevel()
         {
-            ImageIcon game = new ImageIcon("./data/game.png");
+            int LEVEL=0;
+            ImageIcon game = new ImageIcon("./data/game2.png");
             String[] options ={"0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23"};
             String sen= (String) JOptionPane.showInputDialog(
                     null,
@@ -246,7 +280,14 @@ public class MyPanel extends JPanel {
                     options,
                     options[0]
             );
-            return sen;
+            if(sen==null) System.exit(0);
+            try{
+                LEVEL=Integer.parseInt(sen);
+            }
+            catch (Exception e) {
+                System.out.println("Invalid value");
+            }
+            return LEVEL;
         }
 
     }

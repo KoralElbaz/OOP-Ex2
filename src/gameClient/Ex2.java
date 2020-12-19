@@ -2,18 +2,10 @@ package gameClient;
 
 import api.*;
 import Server.Game_Server_Ex2;
-import com.google.gson.JsonObject;
-import gameClient.Arena;
-import gameClient.CL_Agent;
-import gameClient.CL_Pokemon;
-import gameClient.MyFrame;
-import org.json.JSONException;
 import org.json.JSONObject;
-import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,6 +16,7 @@ public class Ex2 implements  Runnable {
     private static directed_weighted_graph g;
     private static HashMap<Integer, List<node_data>> path;
     private static game_service game;
+
     private static long dt;
 
     private static boolean firstRun = true;
@@ -32,13 +25,12 @@ public class Ex2 implements  Runnable {
 
     public static void main(String[] args) {
         if (args.length == 2) {
-            level = Integer.parseInt(args[0]);
-            id = Integer.parseInt(args[1]);
+            level = Integer.parseInt(args[1]);
+            id = Integer.parseInt(args[0]);
         } else {
-            String ID = MyPanel.PopUpWin.getId();
-            id = Integer.parseInt(ID);
-            String Level = MyPanel.PopUpWin.getLevel();
-            level = Integer.parseInt(Level);
+            id= MyPanel.PopUpWin.getId();
+            level = MyPanel.PopUpWin.getLevel();
+
         }
         game = Game_Server_Ex2.getServer(level);
         Thread client = new Thread(new Ex2());
@@ -51,8 +43,7 @@ public class Ex2 implements  Runnable {
         init(game);
         game.startGame();
         _win.setTitle("Ex2 - OOP: (NONE trivial Solution) " + game.toString());
-
-        int ind = 0;
+        int ind = 0;    dt = 100;
         boolean flag = true;
         while (game.isRunning()) {
             //while(flag){
@@ -70,14 +61,13 @@ public class Ex2 implements  Runnable {
             }
         }
 
+
         String res = game.toString();
         System.out.println(res);
         System.exit(0);
     }
 
     public void init(game_service game) {
-
-
         String gG = game.getGraph();
         dw_graph_algorithms saveG = new DWGraph_Algo();
         saveG.load(save(gG));
@@ -221,6 +211,12 @@ public class Ex2 implements  Runnable {
                 agent.setNextNode(nextKey);
                 game.chooseNextEdge(agent.getID(), nextKey);
 
+                String infoAg="Agent: " + agent.getID() + ", Grade: " + agent.getValue();
+                _ar.set_info(infoAg, id);
+
+                agent.setNextNode(nextKey);
+                game.chooseNextEdge(agent.getID(), nextKey);
+
                 System.out.println("Agent: " + id + ", val: " + v + "   turned to node: " + nextKey);
 
                 path.get(id).remove(0);
@@ -296,7 +292,7 @@ public class Ex2 implements  Runnable {
         geo_location dest = g.getNode(e.getDest()).getLocation();
         double dist = src.distance(dest);
         if (dist < (0.001) / 2 || (e.getWeight()<1.9&&a.getSpeed()==5)) {
-          return true;
+            return true;
         }
         return false;
     }

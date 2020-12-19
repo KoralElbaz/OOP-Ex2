@@ -4,11 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * This class represents a very simple GUI class to present a
- * game on a graph - you are welcome to use this class - yet keep in mind
- * that the code is not well written in order to force you improve the
- * code and not to take it "as is".
- *
+ * This class represents a GUI class to present a
+ * game on a graph.
  */
 public class MyFrame extends JFrame {
 	private int _ind;
@@ -22,16 +19,30 @@ public class MyFrame extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 	}
+
+	/**
+	 * Initializing the _ar and the panel.
+	 * @param ar
+	 */
 	public void update(Arena ar)
 	{
 		this._ar = ar;
 		initPanel();
 		jPanel.update();
 	}
+
+	/**
+	 * Constructor for MyPanel.
+	 */
 	private void initPanel() {
 		jPanel=new MyPanel(_ar);
 		this.add(jPanel);
 	}
+
+	/**
+	 * Calls the panel and update the panel.
+	 * @param g
+	 */
 	public void paint(Graphics g) {
 		jPanel.updatePanel();
 		jPanel.repaint();
