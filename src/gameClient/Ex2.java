@@ -15,9 +15,8 @@ public class Ex2 implements  Runnable {
     private static int level, id;
     private static directed_weighted_graph g;
     private static HashMap<Integer, List<node_data>> path;
+    private static HashMap<Integer, CL_Pokemon> target;
     private static game_service game;
-
-    private static long dt;
 
     private static boolean firstRun = true;
     private static boolean change;
@@ -44,18 +43,21 @@ public class Ex2 implements  Runnable {
     @Override
     public void run() {
 
-//        	int id = 314805235;
-//        	game.login(id);
+        int id = 314805235;
+        game.login(id);
+
         init(game);
         game.startGame();
         _win.setTitle("Ex2 - OOP: (NONE trivial Solution) " + game.toString());
-        int ind = 0;    dt = 100;
-        boolean flag = true;
+        int ind = 0;
+
+
         while (game.isRunning()) {
-            //while(flag){
+
             moveAgants();
             try {
-                dt = 100;
+
+                long dt =calcDt();
                 if (ind % 1 == 0) {
                     _win.repaint();
                 }
@@ -75,6 +77,104 @@ public class Ex2 implements  Runnable {
         System.exit(0);
     }
 
+
+    /**
+     * at level 23 we calculate the desired dt.
+     * @return
+     */
+    private long calcDt() {
+
+
+        double de, w;
+        double dist = 0;
+        long min0 = 0, d;
+        long min=minByLevel(min0);
+
+        if(level!=11&&level!=17) {
+            for (CL_Agent agent : _ar.getAgents()) {
+                int agId = agent.getID();
+                if (target.containsKey(agId)) {
+                    edge_data agentEdge = agent.get_curr_edge();
+                    if (agentEdge != null && agentEdge.getSrc() == target.get(agId).getSrc()) {
+
+                        edge_data e = agent.get_curr_edge();
+                        w = e.getWeight();
+                        geo_location dest = g.getNode(e.getDest()).getLocation();
+                        geo_location src = g.getNode(e.getSrc()).getLocation();
+                        de = src.distance(dest);
+
+                        dist = target.get(agId).getLocation().distance(agent.getLocation());
+
+                        double norm = dist / de;
+                        double dt = w * norm / agent.getSpeed();
+                        d = (long) (1000.0 * dt);
+                        if (d < min) {
+                            min = d;
+                        }
+                    }
+                }
+            }
+            if (min == 0) {
+                return 30;
+            }
+        }
+
+        return min;
+    }
+
+
+
+    private static  long minByLevel(long min){
+        if(level==0)
+            min=125;
+        if(level==1)
+            min=125;
+        if(level==2)
+            min=125;
+        if(level==3)
+            min=140;
+        if(level==4)
+            min=125;
+        if(level==5)
+            min=120;
+        if(level==6)
+            min=110;
+        if(level==7)
+            min=115;
+        if(level==8)
+            min=110;
+        if(level==9)
+            min=120;
+        if(level==10)
+            min=110;
+        if(level==11)
+            min=100;
+        if(level==12)
+            min=105;
+        if(level==13)
+            min=110;
+        if(level==14)
+            min=105;
+        if(level==15)
+            min=112;
+        if(level==16)
+            min=115;
+        if(level==17)
+            min=100;
+        if(level==18)
+            min=107;
+        if(level==19)
+            min=109;
+        if(level==20)
+            min=109;
+        if(level==21)
+            min=115;
+        if(level==22)
+            min=110;
+        if(level==23)
+            min=118;
+        return min;
+    }
     public void init(game_service game) {
         String graph = game.getGraph();
         dw_graph_algorithms saveG = new DWGraph_Algo();
@@ -113,6 +213,7 @@ public class Ex2 implements  Runnable {
             }
 
             path = new HashMap<>();
+            target=new HashMap<>();
 
             for (int a = 0; a < agentsNum; a++) {
                 int ind = a % cl_pok.size();
@@ -138,12 +239,29 @@ public class Ex2 implements  Runnable {
      */
     private void startPos(int id, CL_Pokemon c) {
 
-        game.addAgent(c.getSrc());
+        if(g.getE(c.getDest()).size()==0){
+            int nextKey=chooseRanDest();
+            game.addAgent(nextKey);
+        }
+
+        else {
+            game.addAgent(c.getSrc());
+        }
 
         List<node_data> newList = new ArrayList<>();
         path.put(id, newList);
 
 
+    }
+
+    /**
+     * Returns random node the agent go to.
+     * @return node key
+     */
+    private static int chooseRanDest() {
+        int num_of_nodes = g.nodeSize();
+        int rand = (int) (Math.random() * num_of_nodes);
+        return rand;
     }
 
     /**
@@ -200,6 +318,7 @@ public class Ex2 implements  Runnable {
             _ar.setPokemons(ffs);
             for (CL_Agent agent : agents) {
 
+
                 path.put(agent.getID(), new ArrayList<>());
                 chooseNext(agent);
 
@@ -217,6 +336,7 @@ public class Ex2 implements  Runnable {
                 //get the next node in the shortest path.
                 int nextKey= path.get(id).get(0).getKey();
                 agent.setNextNode(nextKey);
+
                 game.chooseNextEdge(agent.getID(), nextKey);
 
                 String infoAg="Agent: " + agent.getID() + ", Grade: " + agent.getValue();
@@ -227,21 +347,12 @@ public class Ex2 implements  Runnable {
 
                 path.get(id).remove(0);
 
-                //////////////////////////////////////////////
-                if(path.size()==0 && g.getE(nextKey).size()==0){
-                    nextKey=chooseRanDest();
-                }
             }
 
 
         }
     }
 
-    private static int chooseRanDest() {
-        int num_of_nodes = g.nodeSize();
-        int rand = (int) (Math.random() * num_of_nodes);
-        return rand;
-    }
 
 
     /**
@@ -267,6 +378,11 @@ public class Ex2 implements  Runnable {
 
                 double currDist = ga.shortestPathDist(agSrc, c.getSrc());
 
+                //////
+                if(g.getE(c.getDest()).size()==0|| currDist== -1){
+                    break;
+                }
+
                 //Save the shortest route
                 if (currDist < minDist) {
 
@@ -290,22 +406,9 @@ public class Ex2 implements  Runnable {
         }
 
         path.put(ag.getID(),list);
+        target.put(ag.getID(),chosen);
 
     }
 
-    /**
-     * Checking if the edge too short.
-     * @param e current edge
-     * @param a current agent
-     * @return true iff the edge is short
-     */
-    private static boolean shortEdge(edge_data e, CL_Agent a){
-        geo_location src = g.getNode(e.getSrc()).getLocation();
-        geo_location dest = g.getNode(e.getDest()).getLocation();
-        double dist = src.distance(dest);
-        if (dist < (0.001) / 2 || (e.getWeight()<1.9&&a.getSpeed()==5)) {
-            return true;
-        }
-        return false;
-    }
+
 }
