@@ -8,11 +8,11 @@ import api.game_service;
 import gameClient.util.Point3D;
 import gameClient.util.Range;
 import gameClient.util.Range2D;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.List;
 /**
@@ -20,7 +20,7 @@ import java.util.List;
  * and graphics to the user
  */
 public class MyPanel extends JPanel {
-    private game_service game;
+    private static game_service game;
     private Arena _ar;
     private gameClient.util.Range2Range _w2f;
     private Graphics2D g2D;
@@ -293,5 +293,56 @@ public class MyPanel extends JPanel {
             return LEVEL;
         }
 
+    }
+
+    public static class PopUpWinScores{
+        private double grade;
+        private double moves;
+        private static game_service game;
+
+        public PopUpWinScores(game_service g){
+            this.game=g;
+            this.grade=0;
+            this.moves=0;
+        }
+
+        public double getMove(){
+            try{
+                String jsonstring=game.toString();
+                JSONObject gameJson=new JSONObject(jsonstring);
+                JSONObject gameServer = gameJson.getJSONObject("GameServer");
+                moves = gameServer.getDouble("moves");
+            }
+            catch (JSONException e){
+                e.printStackTrace();
+            }
+            return moves;
+        }
+        public double getGrade(){
+            try{
+                String jsonstring=game.toString();
+                JSONObject gameJson=new JSONObject(jsonstring);
+                JSONObject gameServer = gameJson.getJSONObject("GameServer");
+                grade = gameServer.getDouble("grade");
+            }
+            catch (JSONException e){
+                e.printStackTrace();
+            }
+            return grade;
+        }
+
+        public void paintScores(){
+            ImageIcon pika = new ImageIcon("./data/pika1.png");
+            JFrame f=new JFrame();
+            f.setBounds(0,250,250,250);
+            JOptionPane.showMessageDialog(
+                    f,
+                    "GAME-OVER! \n"+"YOUR GRADE IS : " +getGrade()  + "\n" + " YOUR MOVES IS :" + " " +getMove(),
+                    "GAME-OVER!",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    pika
+
+            );
+        }
     }
 }
