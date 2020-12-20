@@ -44,6 +44,8 @@ public class Ex2 implements  Runnable {
     @Override
     public void run() {
 
+//        	int id = 314805235;
+//        	game.login(id);
         init(game);
         game.startGame();
         _win.setTitle("Ex2 - OOP: (NONE trivial Solution) " + game.toString());
@@ -75,6 +77,7 @@ public class Ex2 implements  Runnable {
         String graph = game.getGraph();
         dw_graph_algorithms saveG = new DWGraph_Algo();
         saveG.load(save(graph));
+
         g = saveG.copy();
         _ar = new Arena();
         _ar.setGraph(g);
@@ -217,15 +220,14 @@ public class Ex2 implements  Runnable {
                 String infoAg="Agent: " + agent.getID() + ", Grade: " + agent.getValue();
                 _ar.set_info(infoAg, id);
 
-                agent.setNextNode(nextKey);
-                game.chooseNextEdge(agent.getID(), nextKey);
 
                 System.out.println("Agent: " + id + ", val: " + v + "   turned to node: " + nextKey);
 
                 path.get(id).remove(0);
 
-                if(path.size()==0 && shortEdge(agent.get_curr_edge(),agent)){
-                    dt=15;
+                //////////////////////////////////////////////
+                if(path.size()==0 && g.getE(nextKey).size()==0){
+                    nextKey=chooseRanDest();
                 }
             }
 
@@ -233,6 +235,11 @@ public class Ex2 implements  Runnable {
         }
     }
 
+    private static int chooseRanDest() {
+        int num_of_nodes = g.nodeSize();
+        int rand = (int) (Math.random() * num_of_nodes);
+        return rand;
+    }
 
 
     /**
