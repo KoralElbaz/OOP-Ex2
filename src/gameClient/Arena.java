@@ -35,11 +35,7 @@ public class Arena {
 		_info = new ArrayList<String>();
 		this.time="";
 	}
-	//	private Arena(directed_weighted_graph g, List<CL_Agent> r, List<CL_Pokemon> p) {
-//		_gg = g;
-//		this.setAgents(r);
-//		this.setPokemons(p);
-//	}
+
 	public void setPokemons(List<CL_Pokemon> f)
 	{
 		this._pokemons = f;
@@ -80,7 +76,6 @@ public class Arena {
 
 
 
-	////////////////////////////////////////////////////
 	public static List<CL_Agent> getAgents(String aa, directed_weighted_graph gg) {
 		ArrayList<CL_Agent> ans = new ArrayList<CL_Agent>();
 		try {
@@ -91,24 +86,14 @@ public class Arena {
 				c.update(ags.get(i).toString());
 				ans.add(c);
 			}
-			//= getJSONArray("Agents");
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return ans;
 	}
 
-	//	public static String gameLevel(String l){
-//		JSONObject str = null;
-//		try {
-//			JSONObject t=new JSONObject(l);
-//			str=t.getJSONObject("game_level");
-//		}
-//		catch (JSONException e) {
-//			e.printStackTrace();
-//		}
-//		return str;
-//	}
+
 	public static ArrayList<CL_Pokemon> json2Pokemons(String fs) {
 		ArrayList<CL_Pokemon> ans = new  ArrayList<CL_Pokemon>();
 		try {
@@ -129,7 +114,7 @@ public class Arena {
 		return ans;
 	}
 	public static void updateEdge(CL_Pokemon fr, directed_weighted_graph g) {
-		//	oop_edge_data ans = null;
+
 		Iterator<node_data> itr = g.getV().iterator();
 		while(itr.hasNext()) {
 			node_data v = itr.next();
