@@ -5,6 +5,9 @@ import org.json.JSONObject;
 
 import java.util.Objects;
 
+/**
+ * This class build single agent
+ */
 public class CL_Pokemon {
 	private edge_data _edge;
 	private double _value;
@@ -23,13 +26,29 @@ public class CL_Pokemon {
 		min_dist = -1;
 		min_ro = -1;
 	}
+
+	/**
+	 * Returns if Is the Pokemon marked by an agent.
+	 * @return
+	 */
 	public boolean getIsVisit() {
 		return this.isVisit;
 	}
 
+	/**
+	 * Signifies that Pokemon is a target.
+	 * @return
+	 */
+
 	public void setIsVisit(boolean b) {
 		this.isVisit = b;
 	}
+
+	/**
+	 * Build a pokemon.
+	 * @param json
+	 * @return new pokemon.
+	 */
 	public static CL_Pokemon init_from_json(String json) {
 		CL_Pokemon ans = null;
 		try {
@@ -47,54 +66,66 @@ public class CL_Pokemon {
 		return _edge;
 	}
 
+	/**
+	 * Allows changing the pokemon edge.
+	 * @param _edge
+	 */
 	public void set_edge(edge_data _edge) {
 		this._edge = _edge;
 	}
 
+	/**
+	 * Returns the pokemon position.
+	 * @return
+	 */
 	public Point3D getLocation() {
 		return _pos;
 	}
+
+	/**
+	 * Returns the pokemon type,
+	 * 1 if he is on up edge, -1 if on down edge.
+	 * @return
+	 */
+
 	public int getType() {return _type;}
-	//	public double getSpeed() {return _speed;}
-	public double getValue() {return _value;}
 
-	public double getMin_dist() {
-		return min_dist;
+	/**
+	 * Returns the pokemon value.
+	 * @return
+	 */
+	public double getValue() {
+		return _value;
 	}
 
-	public void setMin_dist(double mid_dist) {
-		this.min_dist = mid_dist;
-	}
+//	public double getMin_dist() {
+//		return min_dist;
+//	}
+//
+//	public void setMin_dist(double mid_dist) {
+//		this.min_dist = mid_dist;
+//	}
+//
+//	public int getMin_ro() {
+//		return min_ro;
+//	}
+//
+//	public void setMin_ro(int min_ro) {
+//		this.min_ro = min_ro;
+//	}
+	/**
+	 * Returns the key of the src_Node of the Pokemon edge.
+	 * @return
+	 */
 
-	public int getMin_ro() {
-		return min_ro;
-	}
-
-	public void setMin_ro(int min_ro) {
-		this.min_ro = min_ro;
-	}
 	public int getSrc(){return _edge.getSrc();}
+
+	/**
+	 * Returns the key of the dest_Node of the Pokemon edge.
+	 * @return
+	 */
 	public int getDest(){return _edge.getDest();}
 
-	public int bigNode(){
-		if(getDest()>getSrc())
-		{
-			System.out.println("------>"+getDest());
-			return getDest();
-		}
-
-		else return getSrc();
-
-	}
-	public int smallNode(){
-		if(getDest()>getSrc())
-		{
-			System.out.println("------>"+getSrc());
-			return getSrc();
-		}
-
-		else return getDest();
-	}
 
 	@Override
 	public int hashCode() {

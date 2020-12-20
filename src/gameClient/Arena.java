@@ -35,11 +35,11 @@ public class Arena {
 		_info = new ArrayList<String>();
 		this.time="";
 	}
-	private Arena(directed_weighted_graph g, List<CL_Agent> r, List<CL_Pokemon> p) {
-		_gg = g;
-		this.setAgents(r);
-		this.setPokemons(p);
-	}
+//	private Arena(directed_weighted_graph g, List<CL_Agent> r, List<CL_Pokemon> p) {
+//		_gg = g;
+//		this.setAgents(r);
+//		this.setPokemons(p);
+//	}
 	public void setPokemons(List<CL_Pokemon> f)
 	{
 		this._pokemons = f;

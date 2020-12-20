@@ -29,7 +29,7 @@ public class MyPanel extends JPanel {
         this.agent = new ImageIcon("./data/ash.png").getImage();
         this.pokemon = new ImageIcon("./data/pika9.png").getImage();
         this.background = new ImageIcon("./data/backG4.jpg").getImage();
-        this.info = new ImageIcon("./data/pokemon.png").getImage();
+        this.info = new ImageIcon("./data/pokemon2.png").getImage();
         this.remote = new ImageIcon("./data/data.png").getImage();
 
     }
