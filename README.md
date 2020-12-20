@@ -55,7 +55,7 @@ in this part there are some departments:
 -   Speed - represent the speed of the agent.
  6. **MyFrame && MyPanel-** these departments are responsible for drawing all the game data and graphics to the user .
 
-#  Brief explanation of the game
+#  Brief explanation on the game
 ## welcome to our game
 
 In our game there are 24 stages (scenarios) each of them has a different starting point.

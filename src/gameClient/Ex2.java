@@ -70,6 +70,8 @@ public class Ex2 implements  Runnable {
 
         String res = game.toString();
         System.out.println(res);
+        MyPanel.PopUpWinScores s=new MyPanel.PopUpWinScores(game);
+        s.paintScores();
         System.exit(0);
     }
 
