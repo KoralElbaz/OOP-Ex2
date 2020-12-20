@@ -4,6 +4,10 @@ import api.geo_location;
 import api.Location;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * LocationTest tests the Location class.
+ * @see Location
+ */
 public class LocationTest {
 
     @Test

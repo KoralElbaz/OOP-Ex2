@@ -148,7 +148,7 @@ public class MyPanel extends JPanel {
 
     /**
      * Draws the graph edges.
-     * @param e
+     * @param e graph edge
      * @param g
      */
     private void drawEdge(edge_data e, Graphics g) {
@@ -172,7 +172,7 @@ public class MyPanel extends JPanel {
 
     /**
      * Draws the graph nodes.
-     * @param n
+     * @param n node_data
      * @param r
      * @param g
      */
@@ -237,7 +237,7 @@ public class MyPanel extends JPanel {
 
         /**
          * Creates the first pop up window of the id request.
-         * @return
+         * @return id window
          */
         public static int getId()
         {
@@ -264,7 +264,7 @@ public class MyPanel extends JPanel {
 
         /**
          * Creates second pop up window of the scenario request.
-         * @return
+         * @return level
          */
         public static int getLevel()
         {

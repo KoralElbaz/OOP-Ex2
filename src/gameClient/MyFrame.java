@@ -22,7 +22,7 @@ public class MyFrame extends JFrame {
 
 	/**
 	 * Initializing the _ar and the panel.
-	 * @param ar
+	 * @param ar the arena
 	 */
 	public void update(Arena ar)
 	{

@@ -27,7 +27,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
     /**
      * Init the graph on which this set of algorithms operates on.
-     * @param g
+     * @param g the graph
      */
     @Override
     public void init(directed_weighted_graph g) {
@@ -36,7 +36,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
     /**
      * Return the underlying graph of which this class works.
-     * @return
+     * @return underlying graph of which this class works
      */
     @Override
     public directed_weighted_graph getGraph() {
@@ -45,7 +45,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
     /**
      * Compute a deep copy of this weighted graph.
-     * @return
+     * @return graph
      */
     @Override
     public directed_weighted_graph copy() {
@@ -85,7 +85,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      * Returns true if and only if (iff) there is a valid path from each node to each
      * other node.
      * This method uses a dfs algorithm.
-     * @return
+     * @return true if there is a valid path from each node to each other node.
      */
 
     @Override
@@ -182,7 +182,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     /**
      * Dijkstra algorithm- is an algorithm for finding the shortest paths between
      * nodes in a graph
-     * @param src -current node
+     * @param src current node
      * @return all the nodes of the graph and their predecessors.
      */
     private HashMap<node_data,node_data> dijkstra(node_data src) {
@@ -226,9 +226,9 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     /**
      * returns the length of the shortest path between src to dest
      * Note: if no such path --> returns -1
-     * @param src - start node
-     * @param dest - end (target) node
-     * @return
+     * @param src start node
+     * @param dest end (target) node
+     * @return the smallest distance.
      */
 
     @Override
@@ -255,8 +255,8 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      * returns the the shortest path between src to dest - as an ordered List of nodes:
      * src--> n1-->n2-->...dest
      * if no such path --> returns null;
-     * @param src - start node
-     * @param dest - end (target) node
+     * @param src start node
+     * @param dest end (target) node
      * @return
      */
     @Override
@@ -297,8 +297,8 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
     /**
      * This function reverses the values in the list
-     * @param path - Short path
-     * @return Short path after reverse
+     * @param path Shortest path
+     * @return Shortest path after reverse
      */
     private List<node_data> reverse(List<node_data> path) {
         List<node_data> shortPath = new ArrayList<>();
@@ -313,8 +313,8 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     /**
      * Saves this weighted directed graph to the given
      * file name - in JSON format
-     * @param file - the file name (may include a relative path).
-     * @return true - iff the file was successfully saved
+     * @param file the file name (may include a relative path).
+     * @return true iff the file was successfully saved
      */
     @Override
     public boolean save(String file) {
@@ -336,8 +336,8 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      * if the file was successfully loaded - the underlying graph
      * of this class will be changed (to the loaded one), in case the
      * graph was not loaded the original graph should remain "as is".
-     * @param file - file name of JSON file
-     * @return true - iff the graph was successfully loaded.
+     * @param file file name of JSON file
+     * @return true iff the graph was successfully loaded.
      */
 
     @Override
@@ -377,7 +377,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
     /**
      * Returns a Jason file that represents the given graph
-     * @return
+     * @return Json file
      */
 
     //Serialize
@@ -420,7 +420,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
     /**
      * Returns a graph by reading a Jason file.
-     * @return
+     * @return graph
      */
     //Deserialize
     private class CreateGraph implements JsonDeserializer<directed_weighted_graph> {

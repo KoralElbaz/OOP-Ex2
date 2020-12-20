@@ -8,6 +8,10 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * DWGraph_AlgoTest tests the DWGraph_Algo class.
+ * @see DWGraph_Algo
+ */
 public class DWGraph_AlgoTest {
 
     @Test

@@ -10,6 +10,10 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * DWGraph_Test tests the DWGraph_DS class.
+ * @see DWGraph_DS
+ */
 public class DWGraph_DSTest {
 
     public static void createGraph(directed_weighted_graph g, int graphSize) {

@@ -23,6 +23,10 @@ public class Ex2 implements  Runnable {
     private static boolean change;
 
 
+    /**
+     * This is the main method for the driver program.
+     * @param args stores the incoming command line arguments for the program.
+     */
     public static void main(String[] args) {
         if (args.length == 2) {
             level = Integer.parseInt(args[1]);
@@ -68,9 +72,9 @@ public class Ex2 implements  Runnable {
     }
 
     public void init(game_service game) {
-        String gG = game.getGraph();
+        String graph = game.getGraph();
         dw_graph_algorithms saveG = new DWGraph_Algo();
-        saveG.load(save(gG));
+        saveG.load(save(graph));
         g = saveG.copy();
         _ar = new Arena();
         _ar.setGraph(g);
@@ -124,8 +128,8 @@ public class Ex2 implements  Runnable {
     /**
      * Positions the agents for the first time according
      * to the location of the Pokemon
-     * @param id
-     * @param c
+     * @param id agent id
+     * @param c pokemon target
      */
     private void startPos(int id, CL_Pokemon c) {
 
@@ -139,13 +143,13 @@ public class Ex2 implements  Runnable {
 
     /**
      * Saves the graph as Json file.
-     * @param gG
-     * @return
+     * @param g String of the graph
+     * @return Json file
      */
-    private String save(String gG) {
+    private String save(String g) {
         try {
             FileWriter fw = new FileWriter("Jgraph.json");
-            fw.write(gG);
+            fw.write(g);
             fw.flush();
             fw.close();
 
@@ -159,7 +163,6 @@ public class Ex2 implements  Runnable {
      * Moves each of the agents along the edge,
      * in case the agent is on a node the next destination next edge is chosen .
      * In case the agent reached the destination a new destination was chosen for him
-     * @param
      */
     private static void moveAgants() {
 
@@ -236,7 +239,7 @@ public class Ex2 implements  Runnable {
      * This function checks which pokemon should send the Agent
      * by calculating to which Pokemon the shortest path
      *
-     * @param ag     is the AgentPokemon.
+     * @param ag the Agent
      */
     private static void chooseNext(CL_Agent ag) {
 
@@ -283,9 +286,9 @@ public class Ex2 implements  Runnable {
 
     /**
      * Checking if the edge too short.
-     * @param e
-     * @param a
-     * @return
+     * @param e current edge
+     * @param a current agent
+     * @return true iff the edge is short
      */
     private static boolean shortEdge(edge_data e, CL_Agent a){
         geo_location src = g.getNode(e.getSrc()).getLocation();
