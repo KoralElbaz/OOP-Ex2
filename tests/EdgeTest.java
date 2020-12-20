@@ -1,9 +1,14 @@
+import api.DWGraph_Algo;
 import api.DWGraph_DS;
 import api.edge_data;
 import api.node_data;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * EdgeTest tests the Edge class.
+ * @see api.DWGraph_DS.Edge
+ */
 public class EdgeTest {
 
     @Test

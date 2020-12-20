@@ -30,7 +30,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      * returns the node_data by the node_key,
-     * @param key - the node_id
+     * @param key the node_id
      * @return the node_data by the node_key, null if none.
      */
     @Override
@@ -40,8 +40,8 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      * returns the data of the edge (src,dest), null if none.
-     * @param src
-     * @param dest
+     * @param src the source of the edge.
+     * @param dest the destination of the edge.
      * @return edge_data by the src_edge and dest_edge.
      */
 
@@ -59,7 +59,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     /**
      * adds a new node to the graph with the given node_data.
      * if this node  already exist in the graph there is no action.
-     * @param n
+     * @param n the node we add.
      */
 
     @Override
@@ -79,9 +79,9 @@ public class DWGraph_DS implements directed_weighted_graph {
     /**
      * Connects an edge with weight w between node src to node dest.
      * if the edge src-dest already exists - the method simply updates the weight of the edge.
-     * @param src - the source of the edge.
-     * @param dest - the destination of the edge.
-     * @param w - positive weight representing the cost (aka time, price, etc) between src-->dest.
+     * @param src  the source of the edge.
+     * @param dest  the destination of the edge.
+     * @param w  positive weight representing the cost (aka time, price, etc) between src-->dest.
      */
 
     @Override
@@ -131,8 +131,8 @@ public class DWGraph_DS implements directed_weighted_graph {
     /**
      * Deletes the node (with the given ID) from the graph -
      * and removes all edges which starts or ends at this node.
+     * @param key the node key.
      * @return the data of the removed node (null if none).
-     * @param key
      */
     @Override
     public node_data removeNode(int key) {
@@ -168,8 +168,8 @@ public class DWGraph_DS implements directed_weighted_graph {
     /**
      * Deletes the edge from the graph,
      * if the edge doesnt exist there is no action.
-     * @param src
-     * @param dest
+     * @param src the source of the edge.
+     * @param dest the destination of the edge.
      * @return the data of the removed edge (null if none).
      */
 
@@ -186,7 +186,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
 
     /** Returns the number of vertices (nodes) in the graph.
-     * @return
+     * @return the number of nodes.
      */
     @Override
     public int nodeSize() {
@@ -194,7 +194,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
     /**
      * Returns the number of edges .
-     * @return
+     * @return the number of edges.
      */
 
     @Override
@@ -204,7 +204,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      * Returns the Mode Count - for testing changes in the graph.
-     * @return
+     * @return the MC
      */
     @Override
     public int getMC() {
@@ -256,7 +256,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * Returns the key (id) associated with this node.
-         * @return
+         * @return the key
          */
 
         @Override
@@ -267,7 +267,7 @@ public class DWGraph_DS implements directed_weighted_graph {
         /** Returns the location of this node, if
          * none return null.
          *
-         * @return
+         * @return the location
          */
         @Override
         public geo_location getLocation() {
@@ -275,7 +275,7 @@ public class DWGraph_DS implements directed_weighted_graph {
         }
 
         /** Allows changing this node's location.
-         * @param p - new new location  (position) of this node.
+         * @param p  new new location  (position) of this node.
          */
         @Override
         public void setLocation(geo_location p) {
@@ -284,7 +284,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * Returns the weight associated with this node.
-         * @return
+         * @return the weight
          */
 
         @Override
@@ -294,7 +294,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * Allows changing this node's weight.
-         * @param w - the new weight
+         * @param w the new weight
          */
 
         @Override
@@ -304,7 +304,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * Returns the remark (meta data) associated with this node.
-         * @return
+         * @return the info
          */
 
         @Override
@@ -314,7 +314,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * Allows changing the remark (meta data) associated with this node.
-         * @param s
+         * @param s the new info
          */
 
         @Override
@@ -325,7 +325,7 @@ public class DWGraph_DS implements directed_weighted_graph {
         /**
          * Temporal data (aka color: e,g, white, gray, black)
          * which can be used be algorithms
-         * @return
+         * @return  data
          */
 
         @Override
@@ -336,7 +336,7 @@ public class DWGraph_DS implements directed_weighted_graph {
         /**
          * Allows setting the "tag" value for temporal marking an node - common
          * practice for marking by algorithms.
-         * @param t - the new value of the tag
+         * @param t the new value of the tag
          */
 
         @Override
@@ -390,7 +390,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * Returns the id of the source node of this edge.
-         * @return
+         * @return the src_node key
          */
 
         @Override
@@ -400,7 +400,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * Returns the id of the destination node of this edge
-         * @return
+         * @return the dest_node key
          */
 
         @Override
@@ -410,7 +410,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * Returns he weight of this edge (positive value).
-         * @return
+         * @return the weight
          */
 
         @Override
@@ -420,7 +420,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * Returns the remark (meta data) associated with this edge.
-         * @return
+         * @return the info
          */
         @Override
         public String getInfo() {
@@ -429,7 +429,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         /**
          * Allows changing the remark (meta data) associated with this edge.
-         * @param s
+         * @param s the info
          */
 
         @Override
@@ -440,7 +440,7 @@ public class DWGraph_DS implements directed_weighted_graph {
         /**
          * Returns temporal data (aka color: e,g, white, gray, black)
          * which can be used be algorithms
-         * @return
+         * @return data
          */
         @Override
         public int getTag() {

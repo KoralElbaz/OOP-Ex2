@@ -31,7 +31,7 @@ public class Location implements geo_location {
 
     /**
      * Returns the value of X.
-     * @return
+     * @return x value
      */
     @Override
     public double x() {
@@ -40,7 +40,7 @@ public class Location implements geo_location {
 
     /**
      * Returns the value of Y.
-     * @return
+     * @return y value
      */
     @Override
     public double y() {
@@ -49,7 +49,7 @@ public class Location implements geo_location {
 
     /**
      * Returns the value of Z.
-     * @return
+     * @return z value
      */
     @Override
     public double z() {
@@ -58,7 +58,8 @@ public class Location implements geo_location {
 
     /**
      * Returns the distance between two points.
-     * @return
+     * @param  g other point location
+     * @return the distance
      */
     @Override
     public double distance(geo_location g) {

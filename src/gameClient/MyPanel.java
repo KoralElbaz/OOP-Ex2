@@ -148,7 +148,7 @@ public class MyPanel extends JPanel {
         int x0 =this.getWidth() - 250;
         int y0 = this.getHeight() / 20;
         g2D.setFont(new Font("Ariel", Font.BOLD, (this.getHeight() + this.getWidth()) / 120));
-       g2D.setColor(Color.WHITE);
+        g2D.setColor(Color.WHITE);
         //g2D.drawImage(remote, this.getWidth() - 350, 0, 350, 250, null);
 
         double j = ((this.getHeight() * this.getWidth()) / 40000);

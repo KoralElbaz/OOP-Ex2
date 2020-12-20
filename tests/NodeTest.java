@@ -5,6 +5,10 @@ import api.node_data;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * EdgeTest tests the Node class.
+ * @see api.DWGraph_DS.Node
+ */
 public class NodeTest {
 
     @Test

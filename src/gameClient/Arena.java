@@ -196,6 +196,7 @@ public class Arena {
 	}
 	public String getTime(){return time;}
 
+
 	public void set_info(String s, int id) {
 		if(_info.size()!=id){
 			_info.remove(id);

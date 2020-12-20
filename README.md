@@ -34,11 +34,11 @@ if the file was successfully loaded - the underlying graph of this class will be
 
 
 
-# part two: pokimon game
+# part two: pokemon game
 in this part there are some departments:
 
  1. **Arena-** an object from the Arena class is a List of Agent and Pokemons. 
- 2. **CL_Pokimon-**  this class build single pokemon. An object from this class contain the follow feature:
+ 2. **CL_Pokemon-**  this class build single pokemon. An object from this class contain the follow feature:
 
 -   Pos - represent the location of the fruit on the axis - X, Y, Z.
 -   Value - represent the point that the pokimon is worth.
@@ -55,7 +55,7 @@ in this part there are some departments:
 -   Speed - represent the speed of the agent.
  6. **MyFrame && MyPanel-** these departments are responsible for drawing all the game data and graphics to the user .
 
-#  brief explanation of the game
+#  Brief explanation of the game
 ## welcome to our game
 
 In our game there are 24 stages (scenarios) each of them has a different starting point.
@@ -64,7 +64,7 @@ Every stage has its own conditions including the duration of the stage, number o
 
 All the data about the game, like agents ,pokimons and the graph, have readed from the server as Json string.
 
-The goal of the game is to get as many points as possible by eating pokimons.
+The goal of the game is to get as many points as possible by eating pokemons.
 
 At the end of each game you can see the number of points and moves we've made.
 
